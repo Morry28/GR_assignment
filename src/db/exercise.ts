@@ -40,11 +40,22 @@ export default (sequelize: Sequelize) => {
 	})
 
 	ExerciseModel.associate = (models) => {
+		console.log('I AM HERE');
+
 		(ExerciseModel as any).belongsTo(models.Program, {
 			foreignKey: {
-				name: 'programID',
+				name: 'programID', //zmenena z programID na program_id
+				allowNull: false
+			}
+		});
+
+		(ExerciseModel as any).belongsToMany(models.User_account, {
+			through: models.User_account_Excercise,
+			foreignKey: {
+				name: 'excercise_id',
 				allowNull: false
 			},
+			otherKey:'user_accounte_id'
 		})
 	}
 

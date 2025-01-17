@@ -4,3 +4,4 @@ export enum EXERCISE_DIFFICULTY {
 	MEDIUM = 'MEDIUM',
 	HARD = 'HARD'
 }
+

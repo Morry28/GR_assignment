@@ -1,0 +1,54 @@
+
+sequelize  <=6.28.2 || >=7.0.0-alpha.1
+Severity: critical
+Sequelize vulnerable to SQL Injection via replacements - https://github.com/advisories/GHSA-wrh9-cjv3-2hpw
+Sequelize information disclosure vulnerability - https://github.com/advisories/GHSA-8c25-f3mj-v6h8
+Sequelize - Default support for “raw attributes” when using parentheses - https://github.com/advisories/GHSA-f598-mfpv-gmfx
+Unsafe fall-through in getWhereConditions - https://github.com/advisories/GHSA-vqfx-gj96-3w95
+
+
+----
+day 0:
+-1h~ pochopenie zadania
+-1h~ pochopenie a navrh Api podla zadania v ramci best practices
+-2h~ research Sequelize
+-1h~ pochopenie a navrh schemy
+-1h~ tvorba WSL prostredia, git , pg, ...etc
+
+
+----
+day 1:
+
+-3h~ tvorba modelov pre db a optimalizacia datovych typov podla mozneho datoveho rozsahu vstupov, tvorba modulu konstant 
+    pre jednoduchu zmenu dlzky datovych typov modelov z jedneho miesta,
+
+*   nedaval som ich ako enums pretoze, potencialne tweak values sa nehodia na princip existencie enums 
+
+*   zadefinovana Case logika: snake_case pre vsetko spojene s db, camelCase pre vsetko mimo db,
+    v pripade query parametrov ktorych nazov sa zhoduje z nazvom columu v DB je zachovana camelCase logika (aj ked to moze breaknut 
+    konzistenciu na pohlad)
+
+-1h~ finalizacia struktury v pg
+    (One) program => excercises (Many)
+    (Many) user_accounts => user_account_excercise <= excercise (Many)
+
+* zamyslenie sa nad spravnym pouzitim triggeru a indexu v nasom pripade
+
+
+----
+day 2://
+
+day 3://prometheus + json vystup, sentry 
+
+day 4:// testovanie
+
+day 5://
+
+notes: 
+
+- Bcrypt, pouzivame na hashovanie lebo je omnoho odolnejsi voci gpu cracknutiu a tym vznika viac casu na reakciu v pripade sec-breachu.
+Pre optimalizaciu vykonu pouzivame auto-optimalizacnu logiku 
+UV_THREADPOOL_SIZE=os.cpus()
+(alebo cpus * 2 ak maju jadra hyperthreadig len pre tuto ulohu je to asi overkill)
+
+
