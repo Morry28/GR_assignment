@@ -7,6 +7,7 @@ import {
 import { DatabaseModel } from '../types/db'
 import { EXERCISE_DIFFICULTY } from '../utils/enums'
 import { ExerciseModel } from './exercise'
+import { FIELD_LENGTHS } from '../utils/consts'
 
 export class ProgramModel extends DatabaseModel {
 	id: number
@@ -25,7 +26,7 @@ export default (sequelize: Sequelize) => {
 			autoIncrement: true
 		},
 		name: {
-			type: DataTypes.STRING(200),
+			type: DataTypes.STRING(FIELD_LENGTHS.DEFAULT_NAME),
 		}
 	}, {
 		paranoid: true,
