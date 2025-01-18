@@ -1,8 +1,9 @@
 import dotenv from 'dotenv'
 import { Request, Response, NextFunction } from 'express'
-import { resposeTranslation } from '../../utils/multiLangResponse'
-import { idText } from 'typescript'
+import { resposeTranslation } from '../../utils/api/multiLangResponse'
 import jwt from 'jsonwebtoken'
+import { resLanguage } from '../../helpers/resLanguage'
+import { log } from '../../services/events'
 
 dotenv.config()
 
@@ -11,11 +12,9 @@ export const jwtValidation = (req: Request, res: Response, _next: NextFunction) 
 
     const userToken = req.headers['authorization'].split(' ')[1]
 
-    const language = Array.isArray(req.headers['language']) ?
-        req.headers['language'][0] :
-        req.headers['language'] || 'en'
-
+    const language = resLanguage(req)
     if (!userToken) {
+        log('WARNING',`Unauthorized API access attempt (missing token)| IP: ${req.ip}, Endpoint: ${req.originalUrl}, Method: ${req.method}`)
         return res.status(401).json({
             message: resposeTranslation[language].MISSING_TOKEN
         })
