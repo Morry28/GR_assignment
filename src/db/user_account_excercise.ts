@@ -42,7 +42,8 @@ export default (sequelize: Sequelize) => {
         paranoid: true,
         timestamps: true,
         sequelize,
-        modelName: 'user_accounts_excercise'
+        modelName: 'user_account_excercise',
+        freezeTableName: true,
     })
 
     User_account_ExcerciseModel.associate = (models) => {

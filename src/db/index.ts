@@ -8,6 +8,8 @@ import defineExercise from './exercise'
 import defineProgram from './program'
 import defineUser_account from './user_account'
 import defineUser_account_Excercise from './user_account_excercise'
+import defineProgram_translation from './program_translation'
+import defineExcercise_translation from './excercise_translation'
 
 const sequelize: Sequelize = new Sequelize('postgres://postgres:123456@51.20.137.187:5432/fitness_app', {
 	logging: false
@@ -20,7 +22,9 @@ const modelsBuilder = (instance: Sequelize) => ({
 	Exercise: instance.import(path.join(__dirname, 'exercise'), defineExercise),
 	Program: instance.import(path.join(__dirname, 'program'), defineProgram),
 	User_account: instance.import(path.join(__dirname, 'user_account'), defineUser_account),
-	User_account_Excercise: instance.import(path.join(__dirname, 'user_account_excercise'), defineUser_account_Excercise) // Many to Many
+	User_account_Excercise: instance.import(path.join(__dirname, 'user_account_excercise'), defineUser_account_Excercise), // Many to Many
+	Program_translation: instance.import(path.join(__dirname, 'program_translation'), defineProgram_translation),
+	Exercise_translation: instance.import(path.join(__dirname, 'excercise_tranlsation'), defineExcercise_translation)
 }) 
 
 const models = modelsBuilder(sequelize)

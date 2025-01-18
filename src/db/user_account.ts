@@ -63,17 +63,18 @@ export default (sequelize: Sequelize) => {
         paranoid: true,
         timestamps: true,
         sequelize,
-        modelName: 'user_account'
+        modelName: 'user_account',
+        freezeTableName: true,
     })
 
     User_accountModel.associate = (models) => {
         (User_accountModel as any).belongsToMany(models.Exercise,{
             through: models.User_account_Excercise,
             foreignKey:{
-                name:'user_account_id',
+                name:'user_accountID',
                 allowNull:false
             },
-            otherKey: 'excercise_id'
+            otherKey: 'excerciseID'
         })
 
     }
