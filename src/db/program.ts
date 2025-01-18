@@ -8,6 +8,7 @@ import { DatabaseModel } from '../types/db'
 import { EXERCISE_DIFFICULTY } from '../utils/enums'
 import { ExerciseModel } from './exercise'
 import { FIELD_LENGTHS } from '../utils/consts'
+import { Program_translationModel } from './program_translation'
 
 export class ProgramModel extends DatabaseModel {
 	id: number
@@ -15,6 +16,7 @@ export class ProgramModel extends DatabaseModel {
 	name: String
 
 	exercises: ExerciseModel[]
+	translations: Program_translationModel[]
 }
 
 export default (sequelize: Sequelize) => {
@@ -32,16 +34,22 @@ export default (sequelize: Sequelize) => {
 		paranoid: true,
 		timestamps: true,
 		sequelize,
-		modelName: 'program'
+		modelName: 'program',
+        freezeTableName: true,
 	})
 
 	ProgramModel.associate = (models) => {
+
 		(ProgramModel as any).hasMany(models.Exercise, {
 			foreignKey: {
 				name: 'programID',
 				allowNull: false
-			},
-			as: 'translations'
+			}
+		});
+
+		ProgramModel.hasMany(models.Program_translation, {
+			foreignKey: 'programID',
+			as: 'translations',
 		})
 	}
 
