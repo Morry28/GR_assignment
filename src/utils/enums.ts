@@ -5,6 +5,10 @@ export enum EXERCISE_DIFFICULTY {
 	HARD = 'HARD'
 }
 
+export enum ROLES {
+    USER = 'user',
+    ADMIN = 'admin'
+}
 export enum LOG_STATUS {
 	INITIALIZED = 'INITIALIZED',
 	ATTACK = 'ATTACK',

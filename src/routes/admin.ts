@@ -12,7 +12,32 @@ const { User_account } = models
 const router: Router = Router()
 
 export default () => {
-    router.patch('/', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => {
+    //vytvor exercise
+    /*
+    template pre languages
+    */
+    router.post('/exercises', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => { })
+
+    //zmen exercise
+    /*
+    template pre languages
+    */
+    router.patch('/exercises/:id', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => { })
+
+    //vymaz exercise
+    router.delete('/exercises/:id', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => { })
+
+    //Pridaj / odober exercise z programu
+    router.get('/programs/exercises/:id', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => { })
+
+    //Vsetky data jedneho usera
+    router.get('/users/:id', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => { })
+
+    //Vsetci useri vsetky data
+    router.get('/users', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => { })
+
+    //Pridavanie attributov userovi
+    router.patch('/user', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => {
 
         const language = req.headers['language'] as string
 

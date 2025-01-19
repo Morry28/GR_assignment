@@ -10,8 +10,8 @@ export type TCustomLog = (status: TStatus, msg: string) => Promise<void>
 export type TSupportedRoles = 'user' | 'admin'
 export type TJwtObject = {
 
-    id: string,
     role: TSupportedRoles,
+    email: string,
     iat: number,
     exp: number
 

@@ -4,12 +4,9 @@ import {
     Model
 } from 'sequelize'
 import { DatabaseModel } from '../types/db'
-import { EXERCISE_DIFFICULTY } from '../utils/enums'
+import { ROLES } from '../utils/enums'
 import { FIELD_LENGTHS } from '../utils/consts'
-import { ExerciseModel } from './exercise'
-import { Hash } from 'crypto'
-import { ProgramModel } from './program'
-import { TSupportedRoles } from '../types/types'
+import { User_account_ExcerciseModel } from './user_account_excercise'
 
 export class User_accountModel extends DatabaseModel {
     id: number
@@ -19,7 +16,8 @@ export class User_accountModel extends DatabaseModel {
     nick_name?: string
     email: string
     password: string
-    role: TSupportedRoles
+    role: ROLES
+    exercises:User_account_ExcerciseModel[]
 }
 
 export default (sequelize: Sequelize) => {

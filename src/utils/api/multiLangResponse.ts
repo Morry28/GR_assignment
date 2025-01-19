@@ -15,6 +15,7 @@ export const resposeTranslation: TMultiLangResponseObject = {
         SUCCESS: 'Success',
         SERVICE_UNAVAILABLE: 'Service is currently unavalible',
         FORBIDDEN: 'Forbidden: You do not have admin privileges.',
+        
     },
     sk: {
         MISSING_TOKEN: 'Autorizácia zlyhala: Chýba Token',
@@ -33,4 +34,4 @@ export const resposeTranslation: TMultiLangResponseObject = {
 
     }
 
-}
+} as const

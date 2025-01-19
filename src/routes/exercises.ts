@@ -1,6 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express'
 
 import { models } from '../db'
+import { resposeTranslation } from '../utils/api/multiLangResponse'
 
 const router: Router = Router()
 
@@ -11,8 +12,9 @@ const {
 
 export default () => {
 	router.get('/', async (req: Request, res: Response, _next: NextFunction) => {
-		const langCode = req.headers['language'] || 'en'
-
+		const language = req.headers['language'] as string
+		const { page, limit, programID, search } = req.query
+		
 		const exercises = await Exercise.findAll({
 			include: [{
 				model: Program,
@@ -22,7 +24,7 @@ export default () => {
 		console.log(exercises)
 		return res.status(200).send({
 			data: exercises,
-			message: 'List of exercises'
+			message: resposeTranslation[language].LIST_OF_EXERCISES
 		})
 	})
 	router.get('/', async (req: Request, res: Response, _next: NextFunction) => {})
