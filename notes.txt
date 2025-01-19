@@ -30,13 +30,19 @@ day 1:
 
 -1h~ finalizacia struktury v pg
     (One) program => excercises (Many)
+    (One) program => program_translation (Many)
+    (One) exercise => exercise_translation (Many)
     (Many) user_accounts => user_account_excercise <= excercise (Many)
+
 
 * zamyslenie sa nad spravnym pouzitim triggeru a indexu v nasom pripade
 
 
 ----
-day 2://
+day 2:
+ -2h~ Tvorba logovacieho a error modulob, log filu a jednoducheho sposobu pouzitia ( nech uz to ma nejaky DX )
+ -1h~ tvorba zabezpecenia prichodzich requestov 
+
 
 day 3://prometheus + json vystup, sentry 
 

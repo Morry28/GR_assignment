@@ -3,6 +3,7 @@ import EventHandler from './eventHandler'
 
 export default class ErrorHandler extends EventHandler {
 
+    //namiesto throw mame iba console.err() v ramci zadania
     static async error(status:TStatus,msg: string): Promise<void> {
         await this.writeLog(status, msg)
         console.error(status,msg) 

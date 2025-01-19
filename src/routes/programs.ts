@@ -4,6 +4,7 @@ import {
 	Response,
 	NextFunction
 } from 'express'
+import { resposeTranslation } from '../utils/api/multiLangResponse'
 
 import { models } from '../db'
 
@@ -14,11 +15,13 @@ const {
 } = models
 
 export default () => {
-	router.get('/', async (_req: Request, res: Response, _next: NextFunction) => {
+	router.get('/', async (req: Request, res: Response, _next: NextFunction) => {
+
+		const language = req.headers['language'] as string
 		const programs = await Program.findAll()
 		return res.json({
 			data: programs,
-			message: 'List of programs'
+			message: resposeTranslation[language].LIST_OF_PROGRAMS
 		})
 	})
 

@@ -1,0 +1,19 @@
+Bonus4 error handling:
+applikovat na apis TODO
+
+bonus2 validation:
+validacia query TODO
+
+BONUS1 TODO
+
+T3 TODO
+
+T2 TODO
+
+T1
+TRIGGER INDEX TODO
+AUTH (JWT) LAYER TODO/PARTIALY DONE
+REG TODO
+LOGIN TODO
+STORE PASS VIA BCRYPT TODO
+
