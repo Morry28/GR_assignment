@@ -1,4 +1,4 @@
-import { resLanguage } from "../../helpers/resLanguage"
+import { resLanguage } from "../../helpers"
 import { log } from "../../services/events"
 import { resposeTranslation } from './multiLangResponse'
 import { Request, Response, NextFunction } from "express"
@@ -11,23 +11,12 @@ export const customReqValidation = () => {
         const email = req.body.email
 
         if (email) {
-            const emailCheckRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
-            const forbiddenCharactersRegex = /[^a-zA-Z0-9._%+-@]/
+            const emailCheckRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/ //check pre strukturu emailu
+            const forbiddenCharactersRegex = /[^a-zA-Z0-9._%+-@]/ // check pre znaky pouzivane pri utokoch
             console.log('checking email')
             if (!emailCheckRegex.test(email) ||  forbiddenCharactersRegex.test(email)) {
 
-                log('WARNING', `Invalid email format | email: ${email} IP: ${req.ip}, Endpoint: ${req.originalUrl}, Method: ${req.method}`)
-
-                return res.status(400).json({
-                    message: resposeTranslation[language].INVALID_EMAIL
-                })
-            }
-        }
-
-        for (const pattern of maliciousPatterns) {
-            if (pattern.test(email)) {
-
-                log('ATTACK', `Attack FOUND | email: ${email} IP: ${req.ip}, Endpoint: ${req.originalUrl}, Method: ${req.method}`)
+                log('ATTACK', `SQL ATTACK ON USER REGISTRATION email: '${email}' IP: ${req.ip}, Endpoint: ${req.originalUrl}, Method: ${req.method}`)
 
                 return res.status(400).json({
                     message: resposeTranslation[language].INVALID_EMAIL

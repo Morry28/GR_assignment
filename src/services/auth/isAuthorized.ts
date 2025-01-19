@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express"
-import { jwtValidation } from './jwtValidation'
+import { jwtVerification } from './jwtVerification'
 import { log } from "../events/logHandler"
 import { resposeTranslation } from "../../utils/api/multiLangResponse"
 
@@ -15,7 +15,7 @@ export const isAuthorized = (req: Request, res: Response, next: NextFunction) =>
         })
     }
     
-    const isValid = jwtValidation(userToken)
+    const isValid = jwtVerification(userToken)
     
     if (isValid) next()
     else return res.status(401).json({

@@ -11,7 +11,7 @@ import { log } from './services/events'
 import LogHandler from './services/events/logHandler'
 import { languageLayer } from './utils/api/languageLayer'
 import passport from 'passport'
-import AuthRouter from './routes/auth'
+import AuthRouter from './routes/auths'
 
 //inicializujeme log file
 LogHandler.initialize()

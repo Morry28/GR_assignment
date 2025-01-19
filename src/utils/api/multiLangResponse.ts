@@ -10,8 +10,11 @@ export const resposeTranslation: TMultiLangResponseObject = {
         LIST_OF_EXERCISES: 'List of exercises',
         SOMETHING_WENT_WRONG: 'Something went wrong, try again later',
         BAD_REQUEST: 'Request is missing attributes',
+        UNAUTHORIZED: 'Invalid email or password',
         AUTHORIZE: 'Please log in',
-        SUCCESS: 'Success'
+        SUCCESS: 'Success',
+        SERVICE_UNAVAILABLE: 'Service is currently unavalible',
+        FORBIDDEN: 'Forbidden: You do not have admin privileges.',
     },
     sk: {
         MISSING_TOKEN: 'Autorizácia zlyhala: Chýba Token',
@@ -22,8 +25,11 @@ export const resposeTranslation: TMultiLangResponseObject = {
         LIST_OF_EXERCISES: 'Zoznam cvičení',
         SOMETHING_WENT_WRONG: 'Niečo sa pokazilo, skúste to znova o chvíľu',
         BAD_REQUEST: 'Nekompletná požiadavka',
+        UNAUTHORIZED: 'Neplatný email alebo heslo',
         AUTHORIZE: 'Prihláste sa prosím',
-        SUCCESS: 'Úspešné'
+        SUCCESS: 'Úspešné',
+        SERVICE_UNAVAILABLE:'Služba je momentalne nedostupná',
+        FORBIDDEN: 'Zakázané: Nie ste admin',
 
     }
 

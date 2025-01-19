@@ -7,7 +7,7 @@ import { log } from '../events'
 dotenv.config()
 
 //validacna fn
-export const jwtValidation = (userToken: string): JwtPayload | null => {
+export const jwtVerification = (userToken: string): JwtPayload | null => {
     try {
         const result = jwt.verify(userToken, process.env.JWT_SECRET_KEY, {
             maxAge: process.env.JTW_TIME_RESTRICTION,
