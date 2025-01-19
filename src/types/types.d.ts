@@ -1,5 +1,5 @@
 export type TMultiLangResponseObject = {
-    [key: string]: { [msg: string]: string }
+    [languageCode: string]: { [msg: string]: string }
 }
 
 export type TLogStatus = 'INITIALIZED' | 'ATTACK' | 'SUCCESS' | 'WARNING' | 'ERROR' | 'INFO' | 'LOG'

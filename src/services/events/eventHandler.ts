@@ -16,7 +16,7 @@ export default abstract class EventHandler {
             } catch {
                 await fs.writeFile(fullPath, '') 
             }
-            await this.writeLog(LOG_STATUS.INFO, 'Log file initialized \n')
+            await this.writeLog(LOG_STATUS.INITIALIZED, ' Server started, you see logs from runtime here \n')
         } catch (error) {
             console.error('Initialization failed:', error)
         }

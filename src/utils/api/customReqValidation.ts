@@ -11,8 +11,10 @@ export const customReqValidation = () => {
         const email = req.body.email
 
         if (email) {
-            const emailCheckRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/ //trdo skopirovane
-            if (!emailCheckRegex.test(email)) {
+            const emailCheckRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+            const forbiddenCharactersRegex = /[^a-zA-Z0-9._%+-@]/
+            console.log('checking email')
+            if (!emailCheckRegex.test(email) ||  forbiddenCharactersRegex.test(email)) {
 
                 log('WARNING', `Invalid email format | email: ${email} IP: ${req.ip}, Endpoint: ${req.originalUrl}, Method: ${req.method}`)
 
@@ -33,7 +35,7 @@ export const customReqValidation = () => {
             }
         }
 
-        // posuvame request do api a prechadzame na dalsi request
+        // posuvame request do routra api  
         next()
 
     }

@@ -1,3 +1,18 @@
-[2025-01-18T14:56:07.979Z][INFO] Prepinam z 4 jadier na 16
-[2025-01-18T14:56:07.997Z][INFO] Log file initialized 
+[2025-01-19T02:26:23.075Z][INFO] Prepinam z 4 threadov na 16
+[2025-01-19T02:26:23.093Z][INITIALIZED]  Server started, you see logs from runtime here 
 
+[2025-01-19T02:26:28.167Z][SUCCESS] A new user has been registered: romanjanek.yt@gmail.com as admin
+[2025-01-19T02:28:32.334Z][SUCCESS] A new user has been registered: romanjanek.yt@gmail.com== as admin
+[2025-01-19T02:32:47.483Z][INFO] Prepinam z 4 threadov na 16
+[2025-01-19T02:32:47.499Z][INITIALIZED]  Server started, you see logs from runtime here 
+
+[2025-01-19T02:32:50.031Z][SUCCESS] A new user has been registered: romanjanek.yt@gmail.com== as admin
+[2025-01-19T02:33:41.317Z][INFO] Prepinam z 4 threadov na 16
+[2025-01-19T02:33:41.336Z][INITIALIZED]  Server started, you see logs from runtime here 
+
+[2025-01-19T02:33:50.121Z][SUCCESS] A new user has been registered: romanjanek.yt@gmail.com== as admin
+[2025-01-19T02:34:20.866Z][INFO] Prepinam z 4 threadov na 16
+[2025-01-19T02:34:20.883Z][INITIALIZED]  Server started, you see logs from runtime here 
+
+[2025-01-19T02:34:30.910Z][SUCCESS] A new user has been registered: romanjanek.yt@gmail.com== as admin
+[2025-01-19T02:37:25.219Z][WARNING] Invalid email format | email: romanjanek.yt@gmail.com" or 1=1 IP: ::1, Endpoint: /register, Method: POST
