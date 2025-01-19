@@ -18,10 +18,12 @@ export default () => {
     router.get('/', isAuthorized, async (req: Request, res: Response, _next: NextFunction) => {
 
         const language = req.headers['language'] as string
+
         try {
-            const result = User_account.findAll({
+            const result = await User_account.findAll({
                 attributes: ['id', 'nick_name']
             })
+
             return res.status(200).json({
                 data: result,
                 message: resposeTranslation[language].LIST_OF_USERS
@@ -35,10 +37,6 @@ export default () => {
 
 
     })
-
-    //registracia noveho usera
-
-
 
     return router
 }

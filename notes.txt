@@ -1,21 +1,13 @@
 
-sequelize  <=6.28.2 || >=7.0.0-alpha.1
-Severity: critical
-Sequelize vulnerable to SQL Injection via replacements - https://github.com/advisories/GHSA-wrh9-cjv3-2hpw
-Sequelize information disclosure vulnerability - https://github.com/advisories/GHSA-8c25-f3mj-v6h8
-Sequelize - Default support for “raw attributes” when using parentheses - https://github.com/advisories/GHSA-f598-mfpv-gmfx
-Unsafe fall-through in getWhereConditions - https://github.com/advisories/GHSA-vqfx-gj96-3w95
-
-
 ----
 day 0:
 -1h~ pochopenie zadania
--1h~ pochopenie a navrh Api podla zadania v ramci best practices
+-1h~ pochopenie a navrh API struktury podla zadania v ramci best practices
 -2h~ research Sequelize
 -1h~ pochopenie a navrh schemy
 -1h~ tvorba WSL prostredia, git , pg, ...etc
 
-
+sum 6h~
 ----
 day 1:
 
@@ -37,18 +29,28 @@ day 1:
 
 * zamyslenie sa nad spravnym pouzitim triggeru a indexu v nasom pripade
 
-
+sum 4h~
 ----
 day 2:
- -2h~ Tvorba logovacieho a error modulob, log filu a jednoducheho sposobu pouzitia ( nech uz to ma nejaky DX )
- -1h~ tvorba zabezpecenia prichodzich requestov 
+ -2h~ Tvorba logovacieho a error modulov, log filu a jednoducheho sposobu pouzitia ( nech uz to ma nejaky DX )
+ -1h~ tvorba zabezpecenia prichodzich requestov ( validacia emailu + check pre utok)
 
-
-day 3://prometheus + json vystup, sentry 
+sum 3h~
+----
+day 3:
+ -3h~ finalizacia predoslých ukonov do použitelnej verzie
+ -1h~ JWT autentifikacia
+ ->1h language validacia cez middleware (language header je interceptnury v middleware)
+ -1h~ Zacatie tvorby API konektorov
+ 
+ sum 6h~
+ ----
+velmi pekne sequelizer vracia atributy s get funkciou
+Chcel som pridat aj update v User rozhrani API ale v zadani je napisane ze Updatuje iba Admin
 
 day 4:// testovanie
 
-day 5://
+day 5:// finalizacia projektu Testing, DB index na
 
 notes: 
 

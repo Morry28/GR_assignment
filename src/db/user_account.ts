@@ -9,6 +9,7 @@ import { FIELD_LENGTHS } from '../utils/consts'
 import { ExerciseModel } from './exercise'
 import { Hash } from 'crypto'
 import { ProgramModel } from './program'
+import { TSupportedRoles } from '../types/types'
 
 export class User_accountModel extends DatabaseModel {
     id: number
@@ -18,7 +19,7 @@ export class User_accountModel extends DatabaseModel {
     nick_name?: string
     email: string
     password: string
-    role: 'admin' | 'user'
+    role: TSupportedRoles
 }
 
 export default (sequelize: Sequelize) => {
