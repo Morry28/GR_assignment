@@ -46,7 +46,10 @@ day 3:
  sum 6h~
  ----
 velmi pekne sequelizer vracia atributy s get funkciou
-Chcel som pridat aj update v User rozhrani API ale v zadani je napisane ze Updatuje iba Admin
+Chcel som pridat aj update v User rozhrani API ale v zadani je napisane ze Updatuje (patch method) iba Admin
+Rate-limiter
+QueryRepeater s autobackoff na zaklade pingovania
+Index na Query User_accounts fields:['id','nick_name'] som neimplementoval lebo si tu testovacie zatazenie db pravdepodobne nevyzduje
 
 day 4:// testovanie
 

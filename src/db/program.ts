@@ -31,7 +31,6 @@ export default (sequelize: Sequelize) => {
 			type: DataTypes.STRING(FIELD_LENGTHS.DEFAULT_NAME),
 		}
 	}, {
-		paranoid: true,
 		timestamps: true,
 		sequelize,
 		modelName: 'program',
@@ -43,7 +42,6 @@ export default (sequelize: Sequelize) => {
 		(ProgramModel as any).hasMany(models.Exercise, {
 			foreignKey: {
 				name: 'programID',
-				allowNull: false
 			}
 		});
 

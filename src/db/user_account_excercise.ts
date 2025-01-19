@@ -10,13 +10,9 @@ import { sequelize } from '.'
 export class User_account_ExcerciseModel extends DatabaseModel {
     id: number
     user_account: User_accountModel
-    excersice: ExerciseModel
-    time_start: Date
-    time_end: Date
-    duration: number
-    user_notes: string
-    exercises: ExerciseModel[]
-    users: User_accountModel[]
+    createdAt: Date
+    exercise: ExerciseModel
+    users: User_accountModel
 
 }
 
@@ -28,18 +24,10 @@ export default (sequelize: Sequelize) => {
             autoIncrement: true,
             allowNull: false
         },
-        time_start: {
+        createdAt: {
             type: DataTypes.DATE
-        },
-        time_end: {
-            type: DataTypes.DATE
-        },
-        duration: {
-            type: DataTypes.INTEGER
         }
-
     }, {
-        paranoid: true,
         timestamps: true,
         sequelize,
         modelName: 'user_account_excercise',

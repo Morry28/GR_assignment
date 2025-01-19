@@ -8,6 +8,7 @@ import dotenv from 'dotenv'
 import { jwtVerification } from "../services/auth/jwtVerification"
 import { where } from "sequelize"
 import { generateGuestId } from '../helpers'
+import { allowedRole } from "../helpers/allowRole"
 dotenv.config()
 
 const router: Router = Router()
@@ -25,8 +26,8 @@ export default () => {
         const { role, password, email } = req.body
         let hashedPass: string
 
-        //uistime sa ze telo je ok
-        if (!role || typeof role !== 'string' || !password || typeof password !== 'string' || !email || typeof email !== 'string') {
+        //uistime sa ze telo je ok a podla pravidiel
+        if (!role || typeof role !== 'string' || !allowedRole(role) || typeof role !== 'string' || !password || typeof password !== 'string' || !email || typeof email !== 'string') {
             return res.status(400).json({
                 message: resposeTranslation[language].BAD_REQUEST
             })
