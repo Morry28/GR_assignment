@@ -16,3 +16,9 @@ export type TJwtObject = {
     exp: number
 
 }
+
+export type TBasicReqInfo = {
+    language: string,
+    userToken: string,
+    decoded: TJwtObject
+}

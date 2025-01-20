@@ -4,6 +4,7 @@ import { models } from '../db'
 import { isAdmin, isAuthorized } from '../services/auth'
 import { resposeTranslation } from '../utils/api/multiLangResponse'
 import { error } from '../services/events'
+import { basicReqInfo } from '../helpers'
 
 const { User_account } = models
 //403 Forbidden
@@ -16,30 +17,60 @@ export default () => {
     /*
     template pre languages
     */
-    router.post('/exercises', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => { })
+    router.post('/exercises', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => {
+
+        const { language, userToken, decoded } = basicReqInfo(req)
+
+    })
 
     //zmen exercise
     /*
     template pre languages
     */
-    router.patch('/exercises/:id', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => { })
+    router.patch('/exercises/:id', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => {
+
+        const { language, userToken, decoded } = basicReqInfo(req)
+
+    })
 
     //vymaz exercise
-    router.delete('/exercises/:id', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => { })
+    router.delete('/exercises/:id', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => {
 
-    //Pridaj / odober exercise z programu
-    router.get('/programs/exercises/:id', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => { })
+        const { language, userToken, decoded } = basicReqInfo(req)
 
+    })
+
+    //pridaj / odober exercise z programu
+    router.post('/programs/:programID/:id', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => {
+
+        const { language, userToken, decoded } = basicReqInfo(req)
+
+    })
+
+    //odober exercise z programu
+    router.post('/programs/:programID/:id', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => {
+
+        const { language, userToken, decoded } = basicReqInfo(req)
+
+    })
     //Vsetky data jedneho usera
-    router.get('/users/:id', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => { })
+    router.get('/users/:id', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => {
+
+        const { language, userToken, decoded } = basicReqInfo(req)
+
+    })
 
     //Vsetci useri vsetky data
-    router.get('/users', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => { })
+    router.get('/users', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => {
+
+        const { language, userToken, decoded } = basicReqInfo(req)
+
+    })
 
     //Pridavanie attributov userovi
-    router.patch('/user', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => {
+    router.patch('/users/:id', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => {
 
-        const language = req.headers['language'] as string
+        const { language, userToken, decoded } = basicReqInfo(req)
 
         try {
             const result = User_account.findAll({

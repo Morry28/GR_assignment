@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express"
 
+//1. custom middleware na nastavenie jazyku komunikacie
 export const languageLayer = () => {
     return (req: Request, _res: Response, next: NextFunction) =>{
 
@@ -9,6 +10,7 @@ export const languageLayer = () => {
             ? languageHeader[0]
             : languageHeader || 'en'
 
+        // posuvame request do routra api  
         next()
     }
 }

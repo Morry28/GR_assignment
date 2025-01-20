@@ -7,6 +7,7 @@ import {
 import { resposeTranslation } from '../utils/api/multiLangResponse'
 
 import { models } from '../db'
+import { basicReqInfo } from '../helpers'
 
 const router: Router = Router()
 
@@ -17,7 +18,8 @@ const {
 export default () => {
 	router.get('/', async (req: Request, res: Response, _next: NextFunction) => {
 
-		const language = req.headers['language'] as string
+		const { language } = basicReqInfo(req)
+		
 		const programs = await Program.findAll()
 		return res.json({
 			data: programs,

@@ -17,7 +17,7 @@ import AuthRouter from './routes/auths'
 LogHandler.initialize()
 
 //Auto-optimalizacia pre matematicke asynchronne ulohy ( napr bcrypt ), automaticky rozsirime threadpool na max jadier
-//ignorujeme potrencialnu moznost hyperthreadingu alebo clustra
+//v pripade ze cpu podporuje hyperthreading mame az dvojnasobok threadov
 process.env.UV_THREADPOOL_SIZE = os.cpus().length.toString()
 log('INFO','Prepinam z 4 threadov na ' + process.env.UV_THREADPOOL_SIZE)
 
@@ -28,9 +28,9 @@ const app = express()
 //requesty prechadzaju cez language layer ktori requestom priradi default 'language' header pokial ho nemaju ( v ramci DRY ) 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+app.use(languageLayer())
 app.use(passport.initialize())
 app.use(customReqValidation())
-app.use(languageLayer())
 
 //routing na 4 hlavne API rozhrania
 app.use('/programs', ProgramRouter())

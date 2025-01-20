@@ -1,5 +1,6 @@
 import { TMultiLangResponseObject } from '../../types/types'
 
+//translator podla language code
 export const resposeTranslation: TMultiLangResponseObject = {
     en: {
         MISSING_TOKEN: 'Authorization failed: Token is missing',
