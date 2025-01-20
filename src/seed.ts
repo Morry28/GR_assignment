@@ -73,8 +73,8 @@ const seedDB = async () => {
 		{ exerciseID: exercises[5].id, lang_code: 'sk', name: 'Hyperextenzie' },
 
 		{ exerciseID: exercises[6].id, lang_code: 'sk', name: 'Drepy' },
-		{ exerciseID: exercises[7].id, lang_code: 'sk', name: 'Bulharské drepy' },
-		{ exerciseID: exercises[8].id, lang_code: 'sk', name: 'Ischiokrurály' },
+		{ exerciseID: exercises[7].id, lang_code: 'sk', name: 'Ischiokrurály' },
+		{ exerciseID: exercises[8].id, lang_code: 'sk', name: 'Bulharské drepy' },
 	])
 }
 

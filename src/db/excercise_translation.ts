@@ -11,6 +11,7 @@ export class Exercise_translationModel extends DatabaseModel {
     id: number
     lang_code: string
     name: string
+    
 }
 
 export default (sequelize: Sequelize) => {

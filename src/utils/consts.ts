@@ -7,3 +7,10 @@ export const FIELD_LENGTHS = {
 	ROLE: 5,
 	AGE: 3
 } as const
+
+export const knownQueries = {
+	search: 'string',
+	programID: 'number',
+	limit: 'number',
+	page: 'number'
+} as const

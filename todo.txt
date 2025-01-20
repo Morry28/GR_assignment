@@ -1,11 +1,6 @@
-Bonus4 error handling:
-applikovat na apis TODO
+admin APIS
 
-bonus2 validation:
-validacia query TODO
 
-BONUS1 TODO
 
-T3 TODO
 
-T2 TODO
+
