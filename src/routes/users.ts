@@ -5,12 +5,14 @@ import { isAuthorized } from '../services/auth'
 import { log, error } from '../services/events'
 import jwt from 'jsonwebtoken'
 import { TJwtObject } from '../types/types'
-import { createDeflate } from 'zlib'
+import { basicReqInfo } from '../helpers'
 
 const router: Router = Router()
 
 const {
-    User_account
+    User_account,
+    User_account_Excercise,
+    Completed_ExcerciseModel
 
 } = models
 
@@ -18,7 +20,7 @@ export default () => {
     //Necitlive data iba pre reg users, vsetci useri
     router.get('/', isAuthorized, async (req: Request, res: Response, _next: NextFunction) => {
 
-        const language = req.headers['language'] as string
+        const { language } = basicReqInfo(req)
 
         try {
             const result = await User_account.findAll({
@@ -41,10 +43,7 @@ export default () => {
     //Userove data
     router.get('/me', isAuthorized, async (req: Request, res: Response, _next: NextFunction) => {
 
-        const language = req.headers['language'] as string
-        const userToken = req.headers['authorization'].split(' ')[1]
-
-        const decoded = jwt.decode(userToken) as TJwtObject
+        const { language, decoded } = basicReqInfo(req)
 
         try {
             const result = await User_account.findOne({
@@ -70,10 +69,18 @@ export default () => {
 
     })
     //Aktivne exercises
-    router.get('/excercises/active', isAuthorized, async (req: Request, res: Response, _next: NextFunction) => {})
+    router.get('/excercises/active', isAuthorized, async (req: Request, res: Response, _next: NextFunction) => {
+
+        const { language, userToken, decoded } = basicReqInfo(req)
+
+    })
 
     //Ukoncene exercises
-    router.get('/excercises/completed', isAuthorized, async (req: Request, res: Response, _next: NextFunction) => {})
+    router.get('/excercises/completed', isAuthorized, async (req: Request, res: Response, _next: NextFunction) => {
+
+        const { language, userToken, decoded } = basicReqInfo(req)
+
+     })
 
 
     return router

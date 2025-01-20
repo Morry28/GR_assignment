@@ -5,10 +5,8 @@ import bcrypt from 'bcrypt'
 import { generateJwt } from "../services/auth"
 import { error, log } from "../services/events"
 import dotenv from 'dotenv'
-import { jwtVerification } from "../services/auth/jwtVerification"
-import { where } from "sequelize"
-import { generateGuestId } from '../helpers'
-import { allowedRole } from "../helpers/allowRole"
+import { basicReqInfo, generateGuestId } from '../helpers'
+import { allowedRole } from "../helpers"
 dotenv.config()
 
 const router: Router = Router()
@@ -22,7 +20,7 @@ export default () => {
 
     router.post('/register', async (req: Request, res: Response, _next: NextFunction) => {
 
-        const language = req.headers['language'] as string
+        const { language } = basicReqInfo(req)
         const { role, password, email } = req.body
         let hashedPass: string
 
@@ -38,7 +36,7 @@ export default () => {
             hashedPass = await bcrypt.hash(password, parseInt(process.env.BCRYPT_SALT_ROUNDS, 10))
 
         } catch (e) {
-            error('CRITICAL', `BCRYPT FAILED SERVER IS OVERLOADED, SCALE IMMEDIATELY ! ( salt rounds: ${process.env.BCRYPT_SALT_ROUNDS}): ` + e)
+            error('CRITICAL', `BCRYPT FAILED SERVER MIGHT BE OVERLOADED ! ( salt rounds: ${process.env.BCRYPT_SALT_ROUNDS}): ` + e)
             return res.status(503).json({
                 message: resposeTranslation[language].SERVICE_UNAVAILABLE
             })
@@ -49,6 +47,7 @@ export default () => {
                 role,
                 email
             })
+
             //insertneme usera do db
             await User_account.create({
                 email,

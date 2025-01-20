@@ -2,6 +2,7 @@ import { Router, Request, Response, NextFunction } from 'express'
 
 import { models } from '../db'
 import { resposeTranslation } from '../utils/api/multiLangResponse'
+import { basicReqInfo } from '../helpers'
 
 const router: Router = Router()
 
@@ -11,8 +12,9 @@ const {
 } = models
 
 export default () => {
-	router.get('/', async (req: Request, res: Response, _next: NextFunction) => {
-		const language = req.headers['language'] as string
+	router.get('/?', async (req: Request, res: Response, _next: NextFunction) => {
+		
+		const { language } = basicReqInfo(req)
 		const { page, limit, programID, search } = req.query
 		
 		const exercises = await Exercise.findAll({

@@ -1,3 +1,4 @@
+Moj devLog k assignmentu:
 
 ----
 day 0:
@@ -8,6 +9,8 @@ day 0:
 -1h~ tvorba WSL prostredia, git , pg, ...etc
 
 sum 6h~
+
+
 ----
 day 1:
 
@@ -30,12 +33,19 @@ day 1:
 * zamyslenie sa nad spravnym pouzitim triggeru a indexu v nasom pripade
 
 sum 4h~
+
+
 ----
 day 2:
  -2h~ Tvorba logovacieho a error modulov, log filu a jednoducheho sposobu pouzitia ( nech uz to ma nejaky DX )
- -1h~ tvorba zabezpecenia prichodzich requestov ( validacia emailu + check pre utok)
+ *      Je spraveny asynchronne aby zbytocne nepouzival main thread, i ked mozu byt nie uplne porade Logs ak su invoknute tesne po sebe
+
+ -1h~ tvorba zabezpecenia prichodzich requestov ( validacia emailu + check pre utok) cez middleware
+ *      Tu som kvoli Regexu vyuzil internet najviac
 
 sum 3h~
+
+
 ----
 day 3:
  -3h~ finalizacia predoslých ukonov do použitelnej verzie
@@ -44,22 +54,66 @@ day 3:
  -1h~ Zacatie tvorby API konektorov
  
  sum 6h~
- ----
-velmi pekne sequelizer vracia atributy s get funkciou
-Chcel som pridat aj update v User rozhrani API ale v zadani je napisane ze Updatuje (patch method) iba Admin
-Rate-limiter
-QueryRepeater s autobackoff na zaklade pingovania
-Index na Query User_accounts fields:['id','nick_name'] som neimplementoval lebo si tu testovacie zatazenie db pravdepodobne nevyzduje
-
-day 4:// testovanie
-
-day 5:// finalizacia projektu Testing, DB index na
-
-notes: 
-
-- Bcrypt, pouzivame na hashovanie lebo je omnoho odolnejsi voci gpu cracknutiu a tym vznika viac casu na reakciu v pripade sec-breachu.
-Pre optimalizaciu vykonu pouzivame auto-optimalizacnu logiku 
-UV_THREADPOOL_SIZE=os.cpus()
-(alebo cpus * 2 ak maju jadra hyperthreadig len pre tuto ulohu je to asi overkill)
 
 
+----
+ day 4:
+ -5h~ tvorba, testovanie a riesenie edgecasov apis
+*   Unifikovana fn pre zakladne spracovanie dat z requestu: const { language, userToken, decoded } = basicReqInfo(req)
+*   APIs su pisane v ramci vytvorenej logiky: Hlavicka, 'krk', telo
+        - Hlavicka je klasicky path s filtrami
+        - Krk je datovy spajac pre lepsiu citatelnost codu, nakolko je APIs vela a 1-3 riadkove opakovania su nekonzistentne, preto basicReqInfo(req) oneliner
+        - Telo uz vykonava ulohu urcenu pre apis
+        - (patou by sme vedeli nazvat chatch na konic)         
+
+ >1h~ pridana tabulka completed_excercise na odlahcenie query s automatickym vypoctom casu v sekundach
+     (Many) user_accounts => completed_excercise <= excercise (Many)
+
+ -1h~ pridanie overeni do API konektorov ako isAuthorized isAdmin
+
+ sum 8h~
+
+
+----
+
+day: 5 Finalizacia, testy
+
+
+Zopar notes:
+- Nevedel som ci mam implementovat tak som to vynechal ( nebolo v zadani ):
+    1. Indexy, napr index User_accounts fields:['id','nick_name']  Lahko optimalizovatelne potencialne narocne volanie pri potencialne vela useroch.
+        V pripate ze by user app toto volala min 1 krat za 1 pouzitie index by bol vhodny
+    2. Rate Limiter, ci uz 3rd party napr 'express-rate-limit' alebo vlastny cez nejaky token bucket alebo token bucket s que (ak tak banom).
+        Rate limiter beriem ako must pre cold runtime a opSec proti amaterskym DDOS bez proxy
+            + Da sa este nakonfigurat na zaklade apache benchmarku v kombinacii s auto-optimalizaciou UV_THREADPOOL_SIZE
+    3. Password reset
+    4. Email/Sms/telegram/... notifikacia pre CRITICAL logs/errors ( handy, ale asi overkill )
+    5. Rozsirene API rozhranie do user pre update user udajov ( podla zadania to moze iba admin)
+    6. fetchRepeater (query repeater, napr 3x) s autobackoff na zaklade pingpongovania latencia DB 
+    7. Kontajnerizacia + emit Js files ( celkovo som sa compilatora asi ani nechytal )
+    8. Testy ( v podstate som robil unit,integ aj e2e zabehu+nakonci ale nie projektovym kodom )
+    9. @aliasy, asi pokial Ts nebude nativne podporovat aliasy tak za ten hell to nestoji ( v ramci zadania )    
+
+- Nevedel som ci mam implementovat ale spravil som ( nebolo v zadani )
+    1. Auto-optimalizacia UV_THREADPOOL_SIZE na effektivny max ktory povoluje HW, pride mi to ako pekny must 
+    2. Rozsirene API rozhranie do users pre manipulaciu s exercises a programs
+    3. middleware ochrana proti email utokom
+
+- Spravil som to takto:
+    1. patrim do nazorovej skupiny ze pre db nazvy je krajsi snake_case, camelCase som zachoval pri nazvoch ktore su referencie
+    2. na ciselne konstanty som pouzil cost as const a pre fixed strings struktury enums
+    3. ohladom OOP, riesia ktore si vyzadovali paternovu hyerarchiu alebo pripad pre superclass > class som pouzil class,inak prevazne funkcie
+    4. Na hashovanie user passwords bezne pouzivam Bcrypt preto by malo byt 1000x (asi) narocnejsie ho reverznut GPUckom,
+        64 digit a 10 salt rounds ako taky min standard 
+    5. Jazykovu vrstvu som umiestil do middlewaru pred validactu customReqValidation()
+
+-Last notes:
+    1. Sequelizer som absolutne nepoznal a je to celkom handy i ked verzia v projekte nema nativnu ochranu proti utokom ( kompenzovane zadanim )
+    2. S jwt som nemal skusenost aj ked s passportom ano, jwt mi pride elegatny, myslim ze security boost by bolo mat privatekey per user,
+        pretoze ked je takto zdielany prinasa to vektory utokov navyse (asi)
+    3. Vyuzival som internetove nastroje prevazne na jwt sequelizer a regex, okrem toho iba take veci ako best practices v nazvoslovi a konfiguraciach
+
+
+
+Dakujem za moznost vypracovat zadanie
+dev.roman

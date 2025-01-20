@@ -1,4 +1,5 @@
 import { generateGuestId } from './guestNameGen'
-import { resLanguage } from './resLanguage'
+import { allowedRole } from './allowRole'
+import { basicReqInfo } from './basicReqInfo'
 
-export { generateGuestId, resLanguage }
+export { generateGuestId, allowedRole, basicReqInfo }
