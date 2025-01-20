@@ -1,12 +1,17 @@
 import { Router, Request, Response, NextFunction } from 'express'
 
-import { models } from '../db'
+import { models, sequelize } from '../db'
 import { isAdmin, isAuthorized } from '../services/auth'
 import { resposeTranslation } from '../utils/api/multiLangResponse'
 import { error } from '../services/events'
 import { basicReqInfo } from '../helpers'
+import { log } from '../services/events'
 
-const { User_account } = models
+const {
+    User_account,
+    Exercise,
+    Exercise_translation
+} = models
 //403 Forbidden
 //201 Created
 //200 OK
@@ -14,12 +19,54 @@ const router: Router = Router()
 
 export default () => {
     //vytvor exercise
-    /*
-    template pre languages
-    */
+    // je potrebne do tela uviest translations: { sk: xxx}
     router.post('/exercises', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => {
 
-        const { language, userToken, decoded } = basicReqInfo(req)
+        const { language } = basicReqInfo(req)
+        const { name, translations, productID } = req.body
+        const { sk } = translations
+        if (!sk || !name) {
+            error('NORMAL', '/admin/exercise missing requirements')
+
+            return res.status(400).json({
+                message: resposeTranslation[language].BAD_REQUEST
+            })
+        }
+
+        try {
+            const transaction = await sequelize.transaction()
+
+            const results = await Exercise.create({
+                name,
+                productID: productID ?? null
+            },
+                { transaction }
+            )
+
+            await Exercise_translation.create(
+                {
+                    exerciseID: Exercise.id,
+                    lang_code: 'sk',
+                    name: sk,
+                },
+                { transaction }
+            )
+
+            await transaction.commit()
+
+            log('INFO', 'New exercise created successfully,' + name)
+            return res.status(201).json({
+                data: results,
+                message: resposeTranslation[language].EXERCISE_CREATED
+            })
+        }
+        catch (e) {
+            error('CRITICAL', '/admin/exercise, ' + e)
+
+            return res.status(500).json({
+                message: resposeTranslation[language].SOMETHING_WENT_WRONG
+            })
+        }
 
     })
 
@@ -29,7 +76,77 @@ export default () => {
     */
     router.patch('/exercises/:id', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => {
 
-        const { language, userToken, decoded } = basicReqInfo(req)
+        const { language } = basicReqInfo(req)
+        const { id } = req.params
+        const { name, translations, programID } = req.body
+        const { sk } = translations
+
+
+        if (!id || (!name && !sk)) {
+            error('NORMAL', `/admin/exercise patch failed missing requirements like id or translation`)
+            return res.status(400).json({
+                message: resposeTranslation[language].BAD_REQUEST
+            })
+        }
+
+        try {
+            const transaction = await sequelize.transaction()
+
+            const exercise = await Exercise.findByPk(id, { transaction })
+            if (!exercise) {
+                error('NORMAL', `/admin/exercise patch failed, exercise id not found`)
+                return res.status(404).json({
+                    message: resposeTranslation[language].EXERCISE_NOT_FOUND
+                })
+            }
+
+            if (name) {
+                await exercise.update({
+                    name,
+                }, { transaction })
+            }
+            if (programID) {
+                await exercise.update({
+                    programID,
+                }, { transaction })
+            }
+
+            if (sk) {
+                const translation = await Exercise_translation.findOne({
+                    where: {
+                        exerciseID: id,
+                        lang_code: 'sk'
+                    },
+                    transaction
+                })
+
+                if (translation) {
+                    await translation.update({ name: sk }, { transaction })
+                } else {
+                    await Exercise_translation.create({
+                        exerciseID: id,
+                        lang_code: 'sk',
+                        name: sk
+                    },
+                        { transaction }
+                    )
+                }
+            }
+
+            await transaction.commit()
+
+            log('SUCCESS', `Exercise updated successfully, ID: ${id}`)
+            return res.status(200).json({
+                message: resposeTranslation[language].EXERCISE_UPDATED
+            })
+        } catch (e) {
+            error('CRITICAL', `/admin/exercise update failed for ID: ${id}, ${e}`)
+            return res.status(500).json({
+                message: resposeTranslation[language].SOMETHING_WENT_WRONG
+            })
+        }
+
+
 
     })
 

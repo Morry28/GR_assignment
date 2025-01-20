@@ -1,5 +1,4 @@
 Moj devLog k assignmentu:
-
 ----
 day 0:
 -1h~ pochopenie zadania
@@ -9,7 +8,6 @@ day 0:
 -1h~ tvorba WSL prostredia, git , pg, ...etc
 
 sum 6h~
-
 
 ----
 day 1:
@@ -34,7 +32,6 @@ day 1:
 
 sum 4h~
 
-
 ----
 day 2:
  -2h~ Tvorba logovacieho a error modulov, log filu a jednoducheho sposobu pouzitia ( nech uz to ma nejaky DX )
@@ -43,8 +40,7 @@ day 2:
  -1h~ tvorba zabezpecenia prichodzich requestov ( validacia emailu + check pre utok) cez middleware
  *      Tu som kvoli Regexu vyuzil internet najviac
 
-sum 3h~
-
+sum 3h
 
 ----
 day 3:
@@ -54,7 +50,6 @@ day 3:
  -1h~ Zacatie tvorby API konektorov
  
  sum 6h~
-
 
 ----
  day 4:
@@ -73,10 +68,12 @@ day 3:
 
  sum 8h~
 
-
 ----
 
-day: 5 Finalizacia, testy
+day: 5
+-2h~ Query paginacia a limity ( podla jazyku )
+-2h~ Pridanie validacie query, nechcel som z toho mat if hell a chcel som aby to bolo viac menej dynamicke.
+*       v utils/consts mame objekt kde mame povolene query a ich typy, customReqValidation() nasledne kontroluje queries podla toho objektu
 
 
 Zopar notes:
@@ -92,10 +89,11 @@ Zopar notes:
     6. fetchRepeater (query repeater, napr 3x) s autobackoff na zaklade pingpongovania latencia DB 
     7. Kontajnerizacia + emit Js files ( celkovo som sa compilatora asi ani nechytal )
     8. Testy ( v podstate som robil unit,integ aj e2e zabehu+nakonci ale nie projektovym kodom )
-    9. @aliasy, asi pokial Ts nebude nativne podporovat aliasy tak za ten hell to nestoji ( v ramci zadania )    
+    9. UML mapu
+    10. @aliasy, asi pokial Ts nebude nativne podporovat aliasy tak za ten hell to nestoji ( v ramci zadania )    
 
 - Nevedel som ci mam implementovat ale spravil som ( nebolo v zadani )
-    1. Auto-optimalizacia UV_THREADPOOL_SIZE na effektivny max ktory povoluje HW, pride mi to ako pekny must 
+    1. Auto-optimalizacia UV_THREADPOOL_SIZE na effektivny max ktory povoluje HW, pride mi to ako pekny must have
     2. Rozsirene API rozhranie do users pre manipulaciu s exercises a programs
     3. middleware ochrana proti email utokom
 
@@ -106,11 +104,12 @@ Zopar notes:
     4. Na hashovanie user passwords bezne pouzivam Bcrypt preto by malo byt 1000x (asi) narocnejsie ho reverznut GPUckom,
         64 digit a 10 salt rounds ako taky min standard 
     5. Jazykovu vrstvu som umiestil do middlewaru pred validactu customReqValidation()
+    
 
 -Last notes:
     1. Sequelizer som absolutne nepoznal a je to celkom handy i ked verzia v projekte nema nativnu ochranu proti utokom ( kompenzovane zadanim )
-    2. S jwt som nemal skusenost aj ked s passportom ano, jwt mi pride elegatny, myslim ze security boost by bolo mat privatekey per user,
-        pretoze ked je takto zdielany prinasa to vektory utokov navyse (asi)
+    2. S jwt som nemal skusenost aj ked s passportom ano, jwt mi pride elegatny a hlavne vdaka secretkey je vpodstate stateless a nebrani
+        horizontalnemu skalovaniu a ani managed cache db nie je potrebna ( aspon v pripade jednoduchych apps )
     3. Vyuzival som internetove nastroje prevazne na jwt sequelizer a regex, okrem toho iba take veci ako best practices v nazvoslovi a konfiguraciach
 
 

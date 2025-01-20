@@ -17,6 +17,7 @@ const {
 } = models
 
 export default () => {
+    
     //Necitlive data iba pre reg users, vsetci useri
     router.get('/', isAuthorized, async (req: Request, res: Response, _next: NextFunction) => {
 
@@ -40,6 +41,7 @@ export default () => {
 
 
     })
+
     //Userove data
     router.get('/me', isAuthorized, async (req: Request, res: Response, _next: NextFunction) => {
 

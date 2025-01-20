@@ -12,7 +12,7 @@ import { EXERCISE_DIFFICULTY } from '../utils/enums'
 import { FIELD_LENGTHS } from '../utils/consts'
 
 export class ExerciseModel extends DatabaseModel {
-	id: number
+	static id: number
 	difficulty: EXERCISE_DIFFICULTY
 	name: String
 
@@ -48,7 +48,6 @@ export default (sequelize: Sequelize) => {
 		(ExerciseModel as any).belongsTo(models.Program, {
 			foreignKey: {
 				name: 'programID', 
-				allowNull: false
 			}
 		});
 
