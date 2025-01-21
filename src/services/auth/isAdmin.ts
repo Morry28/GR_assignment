@@ -3,6 +3,8 @@ import jwt from 'jsonwebtoken'
 import { TJwtObject } from '../../types/types'
 import { log, error } from '../../services/events'
 import { resposeTranslation } from '../../utils/api/multiLangResponse'
+
+//Auth layer --Only for admin
 export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
 
     const userToken = req.headers['authorization'].split(' ')[1]

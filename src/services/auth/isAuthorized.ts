@@ -3,6 +3,7 @@ import { jwtVerification } from './jwtVerification'
 import { log } from "../events/logHandler"
 import { resposeTranslation } from "../../utils/api/multiLangResponse"
 
+//Auth layer all users
 export const isAuthorized = (req: Request, res: Response, next: NextFunction) => {
 
     const userToken = req.headers['authorization'].split(' ')[1]

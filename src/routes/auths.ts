@@ -17,14 +17,15 @@ const {
 } = models
 
 export default () => {
-
+    
+    //Register api for user
     router.post('/register', async (req: Request, res: Response, _next: NextFunction) => {
 
         const { language } = basicReqInfo(req)
         const { role, password, email } = req.body
         let hashedPass: string
 
-        //uistime sa ze telo je ok a podla pravidiel
+        //ensure body is right
         if (!role || typeof role !== 'string' || !allowedRole(role) || typeof role !== 'string' || !password || typeof password !== 'string' || !email || typeof email !== 'string') {
             return res.status(400).json({
                 message: resposeTranslation[language].BAD_REQUEST
@@ -32,11 +33,11 @@ export default () => {
         }
 
         try {
-            //zahashujeme password (opSec + GDPR)
+            //hash password (opSec + GDPR)
             hashedPass = await bcrypt.hash(password, parseInt(process.env.BCRYPT_SALT_ROUNDS, 10))
 
         } catch (e) {
-            error('CRITICAL', `BCRYPT FAILED SERVER MIGHT BE OVERLOADED ! ( salt rounds: ${process.env.BCRYPT_SALT_ROUNDS}): ` + e)
+            error('NORMAL', `BCRYPT FAILED SERVER MIGHT BE OVERLOADED ! ( salt rounds: ${process.env.BCRYPT_SALT_ROUNDS}):  ${e}`)
             return res.status(503).json({
                 message: resposeTranslation[language].SERVICE_UNAVAILABLE
             })
@@ -44,7 +45,7 @@ export default () => {
         try {
 
 
-            //insertneme usera do db
+            //insert user into db
             await User_account.create({
                 email,
                 password: hashedPass,
@@ -52,14 +53,14 @@ export default () => {
                 nick_name: generateGuestId()
             })
 
-            //vytiahneme id aby sme ho vlozili do tokenu, pre buduce porovnavanie podla id ( rychlejsie ako mail )
+            //in this case we seek id so user can be auto-logged
             const result = await User_account.findOne({
                 where: {
                     email: email
                 }
             })
 
-            //vytvorime autorizacny token
+            //create auth token
             const freshJwt = generateJwt({
                 id: result.id,
                 role,
@@ -73,7 +74,7 @@ export default () => {
             })
 
         } catch (e) {
-            error('CRITICAL', '/register at user creation, ' + e)
+            error('NORMAL', `/register at user creation, ${e}`)
 
             return res.status(500).json({
                 message: resposeTranslation[language].SOMETHING_WENT_WRONG
@@ -81,7 +82,7 @@ export default () => {
         }
     })
 
-    //login existujuceho usera
+    //Login for an existing user
     router.post('/login', async (req: Request, res: Response, _next: NextFunction) => {
 
         const language = req.headers['language'] as string
@@ -93,7 +94,7 @@ export default () => {
             })
         }
 
-        //skusime ziskat usera a ak nastane chyba db je down
+        //Attempt to fetch the user, and if an error occurs, the database is down
         try {
 
             const user = await User_account.findOne({
@@ -106,14 +107,14 @@ export default () => {
 
         } catch (e) {
 
-            error('CRITICAL', 'DATABASE could be OFFLINE, ' + e)
+            error('NORMAL', `DATABASE could be OFFLINE, ${e}`)
             return res.status(500).json({
                 message: resposeTranslation[language].SOMETHING_WENT_WRONG
             })
 
         }
 
-        try {// skusime finalizovat poziadavku a ak zlyha je to kvoli plnemu zatazeniu servera
+        try {//Attempt hash pass, and if it fails, it's due to server overload
             const role = userInfo.role
 
             const isPassValid = await bcrypt.compare(password, userInfo.password)
@@ -131,7 +132,7 @@ export default () => {
 
             })
         } catch (e) {
-            error('CRITICAL', '/login at BCRYPT or JWT, ' + e)
+            error('NORMAL', `/login at BCRYPT or JWT, ${e}`)
             return res.status(503).json({
                 message: resposeTranslation[language].SERVICE_UNAVAILABLE
             })
