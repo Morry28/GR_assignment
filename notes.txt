@@ -1,21 +1,22 @@
 
 ~1h: Understanding the assignment
 ~1h: Drafting an API structure based on the assignment while sticking to best practices
-~2h: Researching Sequelize
+~2h: Researching Sequelize (new for me)
 ~1h: Designing and proposing a schema
 ~1h: Setting up the WSL environment, Git, PostgreSQL, etc.
 Total: 6h
 
 Day 1---
 
-~3h: Creating database models and optimizing data types based on potential input ranges, plus a constants module for adjusting model field lengths from a single place.
+~3h: Creating database models and optimizing data types based on potential input ranges, 
+        plus a constants module for adjusting model field lengths from a single place.
 
-Didn’t use enums because tweaking values doesn’t align with the nature of enums.
+Didn’t use enums because tweaking values doesn’t align with the nature of enums(in my opinion).
 Established case logic:
-snake_case for everything DB-related
-camelCase for non-DB logic
-Query parameters that match DB column names keep camelCase, even if it looks inconsistent at first glance.
-~1h: Finalizing the PostgreSQL structure:
+-snake_case for everything DB-related
+-camelCase for DB-unrelated
+
+~1h: Creating first the PostgreSQL structure:
 
 One-to-Many: Program => Exercises
 
@@ -25,7 +26,7 @@ One-to-Many: Exercise => Exercise_translations
 
 Many-to-Many: User_accounts <=> User_account_exercises <=> Exercises
 
-Thought through triggers and indexes for potential use cases.
+I thought about indexes for potential use cases.
 Total: 4h
 
 Day 2---
@@ -51,7 +52,7 @@ Day 4---
 ~5h: Writing, testing, and handling edge cases for APIs.
 
 Unified function for extracting common request data: const { language, userToken, decoded } = basicReqInfo(req).
-~1h: Added a completed_exercise table for query optimization, including auto-calculation of time (seconds).
+~1h: Added a completed_exercise table for query optimization, with calcualtion of time (seconds).
 
 Many-to-Many: User_accounts <=> Completed_exercises <=> Exercises
 ~1h: Added validations like isAuthorized and isAdmin to API connectors.
@@ -70,7 +71,7 @@ utils/consts contains allowed queries and types, validated by customReqValidatio
 Total: 8h
 
 Day 6---
- ~2h: Final polishing and comments
+ ~2h: Final polishing and comments translation into EN
 
 
 -Notes:
@@ -86,7 +87,7 @@ Things I didn’t implement :
 -I didn’t use extended file naming conventions because, given the small scope of the project.
 -Tests (did manual unit, integration, and E2E but not via project code).
 -UML diagram.
--TypeScript aliases (avoided because of compatibility headaches).
+-TypeScript @aliases (avoided because of compatibility headaches, but in serious project its necessary in my opinion).
 
 Things I implemented:
 -Auto-optimized UV_THREADPOOL_SIZE for maximum efficiency based on hardware. ( must be in my opinion )
@@ -97,11 +98,11 @@ Things I implemented:
 Decisions I made:
 -Prefer snake_case for DB, camelCase for everything else.
 -Used as const for numeric constants and enums for fixed strings.
--Applied classes where design patterns required hierarchy; otherwise, used functions.
--Standardized on bcrypt for password hashing (64 characters, 10 salt rounds).
+-(OOP) Applied classes where design patterns required evident hierarchy; otherwise is hierarchy was simple, used functions.
+-Standardized on bcrypt for password hashing (64 characters, 10 salt rounds) better than crypt agains GPU reverse-hashing.
 -Language validation middleware precedes customReqValidation().
 -Hard deletes over deletedAt where appropriate.
--Followed good schema architecture, avoided stuffing data into omnitables tables.
+-Followed good schema architecture, avoided stuffing data into omni-tables tables.
 
 -Challenges (used GPT help):
 -Regex.
@@ -112,5 +113,5 @@ Final thoughts:
 -JWTs are simple, stateless, and great for horizontal scaling (no need for managed cache DBs in simple apps).
 -Used online tools mostly for JWT, Sequelize, and regex.
 
-Thanks for letting me work on this!
-dev.roman
+I appreciate the opportunity to work on this, thank you.
+Roman Janek
