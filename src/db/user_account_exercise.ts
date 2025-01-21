@@ -5,45 +5,33 @@ import {
 import { DatabaseModel } from '../types/db'
 import { ExerciseModel } from './exercise'
 import { User_accountModel } from './user_account'
+import { sequelize } from '.'
 
-export class Completed_ExerciseModel extends DatabaseModel {
+export class User_account_ExerciseModel extends DatabaseModel {
     id: number
     user_account: User_accountModel
-    excersice: ExerciseModel
-    time_start: Date
-    time_end: Date
-    duration: number
-    user_notes: string
-    exercises: ExerciseModel[]
-    users: User_accountModel[]
+    createdAt: Date
+    exercise: ExerciseModel
+    users: User_accountModel
 
 }
 
 export default (sequelize: Sequelize) => {
-    Completed_ExerciseModel.init({
+    User_account_ExerciseModel.init({
         id: {
             type: DataTypes.BIGINT,
             primaryKey: true,
             autoIncrement: true,
             allowNull: false
         },
-        time_start: {
-            type: DataTypes.DATE,
-            allowNull: false
-        },
-        time_end: {
-            type: DataTypes.DATE,
-            allowNull: false
-
-        },
-        duration: {
-            type: DataTypes.INTEGER,
+        createdAt: {
+            type: DataTypes.DATE
         },
         user_account_id: {
             type: DataTypes.BIGINT,
             allowNull: false,
             references: {
-                model: 'user_account', 
+                model: 'user_account', // Názov tabuľky User_account
                 key: 'id'
             }
         },
@@ -51,25 +39,23 @@ export default (sequelize: Sequelize) => {
             type: DataTypes.BIGINT,
             allowNull: false,
             references: {
-                model: 'exercise', 
+                model: 'exercise', // Názov tabuľky Exercise
                 key: 'id'
             }
         },
-
     }, {
-
+        timestamps: true,
         sequelize,
-        modelName: 'completed_exercise',
+        modelName: 'user_account_exercise',
         freezeTableName: true,
-        timestamps: false
     })
 
-    Completed_ExerciseModel.associate = (models) => {
-        (Completed_ExerciseModel as any).belongsTo(models.User_account, {
+    User_account_ExerciseModel.associate = (models) => {
+        (User_account_ExerciseModel as any).belongsTo(models.User_account, {
             foreignKey: 'user_account_id'
         });
 
-        (Completed_ExerciseModel as any).belongsTo(models.Exercise, {
+        (User_account_ExerciseModel as any).belongsTo(models.Exercise, {
             foreignKey: 'exercise_id'
         })
     }
@@ -77,5 +63,5 @@ export default (sequelize: Sequelize) => {
 
 
 
-    return Completed_ExerciseModel
+    return User_account_ExerciseModel
 }

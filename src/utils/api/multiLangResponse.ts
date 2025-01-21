@@ -17,8 +17,15 @@ export const resposeTranslation: TMultiLangResponseObject = {
         SUCCESS: 'Success',
         SERVICE_UNAVAILABLE: 'Service is currently unavalible',
         FORBIDDEN: 'Forbidden: You do not have admin privileges.',
-        EXERCISE_CREATED:'Exercise created successfully',
-        
+        EXERCISE_CREATED: 'Exercise created successfully',
+        EXERCISE_UPDATED: 'Exercise updated sucessfully,',
+        EXERCISE_NOT_FOUND: 'Exercise not found',
+        EXERCISE_DELETED: 'Exercise deleted sucessfully',
+        EXERCISE_PROGRAM_UPDATED: 'Program of exercise updated successfully',
+        EXERCISE_PROGRAM_REMOVED: 'Program was removed from exercise successfully',
+        USER_NOT_FOUND:'User not found',
+        USER_UPDATED: 'User updated sucessfully',
+
     },
     sk: {
         MISSING_TOKEN: 'Autorizácia zlyhala: Chýba Token',
@@ -33,9 +40,17 @@ export const resposeTranslation: TMultiLangResponseObject = {
         UNAUTHORIZED: 'Neplatný email alebo heslo',
         AUTHORIZE: 'Prihláste sa prosím',
         SUCCESS: 'Úspešné',
-        SERVICE_UNAVAILABLE:'Služba je momentalne nedostupná',
+        SERVICE_UNAVAILABLE: 'Služba je momentalne nedostupná',
         FORBIDDEN: 'Zakázané: Nie ste admin',
-        EXERCISE_CREATED:'Cvik vytvorený',
+        EXERCISE_CREATED: 'Cvik vytvorený',
+        EXERCISE_UPDATED: 'Cvik bol úspešne zmenený',
+        EXERCISE_NOT_FOUND: 'Cvik sa nenašiel',
+        EXERCISE_DELETED: 'Cvik bol úspešne vymazaný',
+        EXERCISE_PROGRAM_UPDATED: 'Úspešne ste zmenili program cviku',
+        EXERCISE_PROGRAM_REMOVED: 'Program bol uspešne odstranený z cviku',
+        USER_NOT_FOUND: 'Používateľ sa nenašiel',
+        USER_UPDATED: 'Používateľ bol pozmenený'
+
 
 
     }

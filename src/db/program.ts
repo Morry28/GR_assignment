@@ -41,12 +41,12 @@ export default (sequelize: Sequelize) => {
 
 		(ProgramModel as any).hasMany(models.Exercise, {
 			foreignKey: {
-				name: 'programID',
+				name: 'program_id',
 			}
 		});
 
 		ProgramModel.hasMany(models.Program_translation, {
-			foreignKey: 'programID',
+			foreignKey: 'program_id',
 			as: 'translations',
 		})
 	}

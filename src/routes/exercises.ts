@@ -81,7 +81,7 @@ export default () => {
 
 		try {
 			const results = await Exercise.findAndCountAll({
-				where: programID ? { programID: programID } : {},
+				where: programID ? { program_id: programID } : {},
 				include,
 				limit: Number(limit),
 				offset: pagination,

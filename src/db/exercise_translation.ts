@@ -41,7 +41,7 @@ export default (sequelize: Sequelize) => {
 
         (Exercise_translationModel as any).belongsTo(models.Exercise, {
             foreignKey: {
-                name: 'exerciseID',
+                name: 'exercise_id',
                 allowNull: false
             },
             as: 'translations'
