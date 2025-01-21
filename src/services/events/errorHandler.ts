@@ -1,9 +1,10 @@
 import { TStatus } from '../../types/types'
 import EventHandler from './eventHandler'
 
+//Class responsible for handling errs
 export default class ErrorHandler extends EventHandler {
 
-    //namiesto throw mame iba console.err() v ramci zadania
+    //only console err
     static async error(status:TStatus,msg: string): Promise<void> {
         await this.writeLog(status, msg)
         console.error(status,msg) 

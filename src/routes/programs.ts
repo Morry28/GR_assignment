@@ -17,6 +17,7 @@ const {
 } = models
 
 export default () => {
+	//For all traffic, all programs
 	router.get('/', async (req: Request, res: Response, _next: NextFunction) => {
 
 		const { language } = basicReqInfo(req)

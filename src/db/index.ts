@@ -11,12 +11,24 @@ import defineUser_account_Exercise from './user_account_exercise'
 import defineProgram_translation from './program_translation'
 import defineExercise_translation from './exercise_translation'
 import defineCompleted_Exercise from './completed_exercises'
+import dotenv from 'dotenv'
+import { log } from '../services/events'
 
-const sequelize: Sequelize = new Sequelize('postgres://postgres:123456@51.20.137.187:5432/fitness_app', {
+dotenv.config()
+
+const PG_USER = process.env.PG_USER
+const PG_PASSWORD = process.env.PG_PASSWORD
+const PG_HOST = process.env.PG_HOST
+const PG_PORT = process.env.PG_PORT
+const PG_SCHEME = process.env.PG_SCHEME
+
+const sequelize: Sequelize = new Sequelize(`postgres://${PG_USER}:${PG_PASSWORD}@${PG_HOST}:${PG_PORT}/${PG_SCHEME}`, {
 	logging: false
 })
 
 sequelize.authenticate().catch((e: any) => console.error(`Unable to connect to the database${e}.`))
+
+log('SUCCESS','Database is operational !')
 
 const modelsBuilder = (instance: Sequelize) => ({
 	// Import models to sequelize
@@ -41,7 +53,7 @@ if (Object.keys(models).length !== (modelsFiles.length - 1)) {
 }
 
 Object.values(models).forEach((value: any) => {
-	
+
 	if (value.associate) {
 		value.associate(models)
 	}

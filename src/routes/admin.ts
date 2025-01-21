@@ -19,8 +19,9 @@ const {
 const router: Router = Router()
 
 export default () => {
-    //vytvor exercise
-    // je potrebne do tela uviest translations: { sk: xxx}
+
+    //create exercise
+    // add also translations: { sk: xxx}
     router.post('/exercises', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => {
 
         const { language } = basicReqInfo(req)
@@ -63,7 +64,7 @@ export default () => {
             })
         }
         catch (e) {
-            error('CRITICAL', '/admin/exercise, ' + e)
+            error('NORMAL', '/admin/exercise, ' + e)
 
             return res.status(500).json({
                 message: resposeTranslation[language].SOMETHING_WENT_WRONG
@@ -72,7 +73,7 @@ export default () => {
 
     })
 
-    //zmen exercise napr nazov alebo preklad
+    //change exercise, translation, name...
     router.patch('/exercises/:id', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => {
 
         const { language } = basicReqInfo(req)
@@ -142,7 +143,7 @@ export default () => {
                 message: resposeTranslation[language].EXERCISE_UPDATED
             })
         } catch (e) {
-            error('CRITICAL', `/admin/exercise update failed for ID: ${id}, ${e}`)
+            error('NORMAL', `/admin/exercise update failed for ID: ${id}, ${e}`)
             return res.status(500).json({
                 message: resposeTranslation[language].SOMETHING_WENT_WRONG
             })
@@ -194,14 +195,14 @@ export default () => {
             })
 
         } catch (e) {
-            error('CRITICAL', `/admin/exercise delete failed for ID: ${id}, ${e}`)
+            error('NORMAL', `/admin/exercise delete failed for ID: ${id}, ${e}`)
             return res.status(500).json({
                 message: resposeTranslation[language].SOMETHING_WENT_WRONG
             })
         }
     })
 
-    //pridaj exercise do programu
+    //add exercise into program
     router.patch('/exercises/:id/program', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => {
 
         const { language } = basicReqInfo(req)
@@ -241,14 +242,14 @@ export default () => {
             })
 
         } catch (e) {
-            error('CRITICAL', `/exercises program update failed for ID: ${id}, ${e}`)
+            error('NORMAL', `/exercises program update failed for ID: ${id}, ${e}`)
             return res.status(500).json({
                 message: resposeTranslation[language].SOMETHING_WENT_WRONG
             })
         }
     })
 
-    //odober exercise z programu
+    //delete exercise from program
     router.delete('/exercises/:id/program', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => {
 
         const { language } = basicReqInfo(req)
@@ -286,13 +287,14 @@ export default () => {
                 message: resposeTranslation[language].EXERCISE_PROGRAM_REMOVED
             })
         } catch (e) {
-            error('CRITICAL', `/exercises program removal failed for ID: ${id}, ${e}`)
+            error('NORMAL', `/exercises program removal failed for ID: ${id}, ${e}`)
             return res.status(500).json({
                 message: resposeTranslation[language].SOMETHING_WENT_WRONG
             })
         }
     })
-    // vsetky data o jednom userovi
+
+    //all data one user
     router.get('/users/:id', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => {
 
         const { language } = basicReqInfo(req)
@@ -323,14 +325,14 @@ export default () => {
                 message: resposeTranslation[language].USER_DATA_FETCHED
             })
         } catch (e) {
-            error('CRITICAL', `/users fetch failed for ID: ${id}, ${e}`)
+            error('NORMAL', `/users fetch failed for ID: ${id}, ${e}`)
             return res.status(500).json({
                 message: resposeTranslation[language].SOMETHING_WENT_WRONG
             })
         }
     })
 
-    //Vsetci useri vsetky data
+    //all data all users
     router.get('/users', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => {
 
         const { language } = basicReqInfo(req)
@@ -343,14 +345,14 @@ export default () => {
                 message: resposeTranslation[language].USERS_DATA_FETCHED
             })
         } catch (e) {
-            error('CRITICAL', `/users fetch failed, ${e}`)
+            error('NORMAL', `/users fetch failed, ${e}`)
             return res.status(500).json({
                 message: resposeTranslation[language].SOMETHING_WENT_WRONG
             })
         }
     })
 
-    //zmena attributov userovi
+    //change user data
     router.patch('/users/:id', isAuthorized, isAdmin, async (req: Request, res: Response, _next: NextFunction) => {
 
         const { language } = basicReqInfo(req)
@@ -367,7 +369,7 @@ export default () => {
         try {
             const transaction = await sequelize.transaction()
 
-            // Find the user by ID
+            //find the user by id
             const user = await User_account.findByPk(id, { transaction })
             if (!user) {
                 error('NORMAL', `/users update failed, user ID not found: ${id}`)
@@ -376,7 +378,7 @@ export default () => {
                 })
             }
 
-            // Prepare updates
+            //prepare updates
             const updates: any = {}
             if (name !== undefined) updates.name = name
             if (sur_name !== undefined) updates.sur_name = sur_name
@@ -384,13 +386,13 @@ export default () => {
             if (nick_name !== undefined) updates.nick_name = nick_name
             if (email !== undefined) updates.email = email
             if (password !== undefined) {
-                // zahasujeme password
+
                 try {
-                    //zahashujeme password (opSec + GDPR)
+                    //zahashuhashjeme password (opSec + GDPR)
                     hashedPass = await bcrypt.hash(password, parseInt(process.env.BCRYPT_SALT_ROUNDS, 10))
 
                 } catch (e) {
-                    error('CRITICAL', `BCRYPT FAILED SERVER MIGHT BE OVERLOADED ! ( salt rounds: ${process.env.BCRYPT_SALT_ROUNDS}): ` + e)
+                    error('NORMAL', `BCRYPT FAILED SERVER MIGHT BE OVERLOADED ! ( salt rounds: ${process.env.BCRYPT_SALT_ROUNDS}): ${e}`)
                     return res.status(503).json({
                         message: resposeTranslation[language].SERVICE_UNAVAILABLE
                     })
@@ -407,7 +409,7 @@ export default () => {
                 message: resposeTranslation[language].USER_UPDATED
             });
         } catch (e) {
-            error('CRITICAL', `/users update failed for ID: ${id}, ${e}`);
+            error('NORMAL', `/users update failed for ID: ${id}, ${e}`);
             return res.status(500).json({
                 message: resposeTranslation[language].SOMETHING_WENT_WRONG
             });

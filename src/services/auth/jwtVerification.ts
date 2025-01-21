@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 dotenv.config()
 
-//validacna fn
+//Fn for validation
 export const jwtVerification = (userToken: string): JwtPayload | null => {
     try {
         const result = jwt.verify(userToken, process.env.JWT_SECRET_KEY, {

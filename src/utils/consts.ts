@@ -8,7 +8,8 @@ export const FIELD_LENGTHS = {
 	AGE: 3
 } as const
 
-export const knownQueries = {
+//Query filter
+export const KNOWN_QUERIES = {
 	search: 'string',
 	programID: 'number',
 	limit: 'number',

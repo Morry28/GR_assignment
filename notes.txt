@@ -1,120 +1,116 @@
-Moj devLog k assignmentu:
-----
-day 0:
--1h~ pochopenie zadania
--1h~ pochopenie a navrh API struktury podla zadania v ramci best practices
--2h~ research Sequelize
--1h~ pochopenie a navrh schemy
--1h~ tvorba WSL prostredia, git , pg, ...etc
 
-sum 6h~
+~1h: Understanding the assignment
+~1h: Drafting an API structure based on the assignment while sticking to best practices
+~2h: Researching Sequelize
+~1h: Designing and proposing a schema
+~1h: Setting up the WSL environment, Git, PostgreSQL, etc.
+Total: 6h
 
-----
-day 1:
+Day 1---
 
--3h~ tvorba modelov pre db a optimalizacia datovych typov podla mozneho datoveho rozsahu vstupov, tvorba modulu konstant 
-    pre jednoduchu zmenu dlzky datovych typov modelov z jedneho miesta,
+~3h: Creating database models and optimizing data types based on potential input ranges, plus a constants module for adjusting model field lengths from a single place.
 
-*   nedaval som ich ako enums pretoze, potencialne tweak values sa nehodia na princip existencie enums 
+Didn’t use enums because tweaking values doesn’t align with the nature of enums.
+Established case logic:
+snake_case for everything DB-related
+camelCase for non-DB logic
+Query parameters that match DB column names keep camelCase, even if it looks inconsistent at first glance.
+~1h: Finalizing the PostgreSQL structure:
 
-*   zadefinovana Case logika: snake_case pre vsetko spojene s db, camelCase pre vsetko mimo db,
-    v pripade query parametrov ktorych nazov sa zhoduje z nazvom columu v DB je zachovana camelCase logika (aj ked to moze breaknut 
-    konzistenciu na pohlad)
+One-to-Many: Program => Exercises
 
--1h~ finalizacia struktury v pg
-    (One) program => excercises (Many)
-    (One) program => program_translation (Many)
-    (One) exercise => exercise_translation (Many)
-    (Many) user_accounts => user_account_excercise <= excercise (Many)
+One-to-Many: Program => Program_translations
 
+One-to-Many: Exercise => Exercise_translations
 
-* zamyslenie sa nad spravnym pouzitim triggeru a indexu v nasom pripade
+Many-to-Many: User_accounts <=> User_account_exercises <=> Exercises
 
-sum 4h~
+Thought through triggers and indexes for potential use cases.
+Total: 4h
 
-----
-day 2:
- -2h~ Tvorba logovacieho a error modulov, log filu a jednoducheho sposobu pouzitia ( nech uz to ma nejaky DX )
- *      Je spraveny asynchronne aby zbytocne nepouzival main thread, i ked mozu byt nie uplne porade Logs ak su invoknute tesne po sebe
+Day 2---
 
- -1h~ tvorba zabezpecenia prichodzich requestov ( validacia emailu + check pre utok) cez middleware
- *      Tu som kvoli Regexu vyuzil internet najviac
+~2h: Creating logging and error modules with simple usage.
 
-sum 3h
+Made it asynchronous to avoid blocking the main thread, though logs invoked close together might not appear sequentially.
+~1h: Securing incoming requests with middleware (email validation + attack checks).
 
-----
-day 3:
- -3h~ finalizacia predoslých ukonov do použitelnej verzie
- -1h~ JWT autentifikacia
- ->1h language validacia cez middleware (language header je interceptnury v middleware)
- -1h~ Zacatie tvorby API konektorov
- 
- sum 6h~
+Relied on online resources heavily for regex.
+Total: 3h
 
-----
- day 4:
- -5h~ tvorba, testovanie a riesenie edgecasov apis
-*   Unifikovana fn pre zakladne spracovanie dat z requestu: const { language, userToken, decoded } = basicReqInfo(req)
-*   APIs su pisane v ramci vytvorenej logiky: Hlavicka, 'krk', telo
-        - Hlavicka je klasicky path s filtrami
-        - Krk je datovy spajac pre lepsiu citatelnost codu, nakolko je APIs vela a 1-3 riadkove opakovania su nekonzistentne, preto basicReqInfo(req) oneliner
-        - Telo uz vykonava ulohu urcenu pre apis
-        - (patou by sme vedeli nazvat chatch na konic)         
+Day 3---
 
- >1h~ pridana tabulka completed_excercise na odlahcenie query s automatickym vypoctom casu v sekundach
-     (Many) user_accounts => completed_excercise <= excercise (Many)
+~3h: Finalizing previous work into a usable version.
+~1h: Implementing JWT authentication.
+~1h: Middleware for language validation (intercepting the language header).
+~1h: Starting to develop API connectors.
+Total: 6h
 
- -1h~ pridanie overeni do API konektorov ako isAuthorized isAdmin
+Day 4---
 
- sum 8h~
+~5h: Writing, testing, and handling edge cases for APIs.
 
-----
+Unified function for extracting common request data: const { language, userToken, decoded } = basicReqInfo(req).
+~1h: Added a completed_exercise table for query optimization, including auto-calculation of time (seconds).
 
-day: 5
--2h~ Query paginacia a limity ( podla jazyku )
--2h~ Pridanie validacie query, nechcel som z toho mat if hell a chcel som aby to bolo viac menej dynamicke.
-*       v utils/consts mame objekt kde mame povolene query a ich typy, customReqValidation() nasledne kontroluje queries podla toho objektu
--4h~ finalizacia APis, oprava logiky modelov 
+Many-to-Many: User_accounts <=> Completed_exercises <=> Exercises
+~1h: Added validations like isAuthorized and isAdmin to API connectors.
 
-sum 8h~
+Total: 8h
 
-Zopar notes:
-- Nevedel som ci mam implementovat tak som to vynechal ( nebolo v zadani ):
-    1. Indexy, napr index User_accounts fields:['id','nick_name']  Lahko optimalizovatelne potencialne narocne volanie pri potencialne vela useroch.
-        V pripate ze by user app toto volala min 1 krat za 1 pouzitie index by bol vhodny
-    2. Rate Limiter, ci uz 3rd party napr 'express-rate-limit' alebo vlastny cez nejaky token bucket alebo token bucket s que (ak tak banom).
-        Rate limiter beriem ako must pre cold runtime a opSec proti amaterskym DDOS bez proxy
-            + Da sa este nakonfigurat na zaklade apache benchmarku v kombinacii s auto-optimalizaciou UV_THREADPOOL_SIZE
-    3. Password reset
-    4. Email/Sms/telegram/... notifikacia pre CRITICAL logs/errors ( handy, ale asi overkill )
-    5. Rozsirene API rozhranie do user pre update user udajov ( podla zadania to moze iba admin)
-    6. fetchRepeater (query repeater, napr 3x) s autobackoff na zaklade pingpongovania latencia DB 
-    7. Kontajnerizacia + emit Js files ( celkovo som sa compilatora asi ani nechytal )
-    8. Testy ( v podstate som robil unit,integ aj e2e zabehu+nakonci ale nie projektovym kodom )
-    9. UML mapu
-    10. @aliasy, asi pokial Ts nebude nativne podporovat aliasy tak za ten hell to nestoji ( v ramci zadania )    
+Day 5---
 
-- Nevedel som ci mam implementovat ale spravil som ( nebolo v zadani )
-    1. Auto-optimalizacia UV_THREADPOOL_SIZE na effektivny max ktory povoluje HW, pride mi to ako pekny must have
-    2. Rozsirene API rozhranie do users pre manipulaciu s exercises a programs
-    3. middleware ochrana proti email utokom
+~2h: Pagination and limits for queries (language-dependent).
 
-- Spravil som to takto:
-    1. patrim do nazorovej skupiny ze pre db nazvy je krajsi snake_case, camelCase som zachoval pri nazvoch ktore su referencie
-    2. na ciselne konstanty som pouzil cost as const a pre fixed strings struktury enums
-    3. ohladom OOP, riesia ktore si vyzadovali paternovu hyerarchiu alebo pripad pre superclass > class som pouzil class,inak prevazne funkcie
-    4. Na hashovanie user passwords bezne pouzivam Bcrypt preto by malo byt 1000x (asi) narocnejsie ho reverznut GPUckom,
-        64 digit a 10 salt rounds ako taky min standard 
-    5. Jazykovu vrstvu som umiestil do middlewaru pred validactu customReqValidation()
-    
+~2h: Dynamic query validation to avoid "if hell".
 
--Last notes:
-    1. Sequelizer som absolutne nepoznal a je to celkom handy i ked verzia v projekte nema nativnu ochranu proti utokom ( kompenzovane zadanim )
-    2. S jwt som nemal skusenost aj ked s passportom ano, jwt mi pride elegatny a hlavne vdaka secretkey je vpodstate stateless a nebrani
-        horizontalnemu skalovaniu a ani managed cache db nie je potrebna ( aspon v pripade jednoduchych apps )
-    3. Vyuzival som internetove nastroje prevazne na jwt sequelizer a regex, okrem toho iba take veci ako best practices v nazvoslovi a konfiguraciach
+utils/consts contains allowed queries and types, validated by customReqValidation().
+~4h: Finalizing APIs and fixing model logic.
+
+Total: 8h
+
+Day 6---
+ ~2h: Final polishing and comments
 
 
+-Notes:
 
-Dakujem za moznost vypracovat zadanie
+Things I didn’t implement :
+-Indexing, e.g., User_accounts fields: ['id', 'nick_name'] for potential optimization of frequent queries.
+-Rate limiting (e.g., express-rate-limit or a token bucket approach). Essential for cold runtimes and basic DoS protection.
+-Password reset functionality.
+-Critical log/error notifications (e.g., via email/SMS/Telegram). Nice but overkill.
+-Expanded user API for updating their details (admin-only in this task).
+-Query repeater with exponential backoff for unreliable connections.
+-Containerization and emitted .js files (didn’t touch the compiler).
+-I didn’t use extended file naming conventions because, given the small scope of the project.
+-Tests (did manual unit, integration, and E2E but not via project code).
+-UML diagram.
+-TypeScript aliases (avoided because of compatibility headaches).
+
+Things I implemented:
+-Auto-optimized UV_THREADPOOL_SIZE for maximum efficiency based on hardware. ( must be in my opinion )
+-Extended user API for managing exercises and programs. ( mainly for testing)
+-Middleware protection against email and query injection attacks. if(query) has dynamic detection of query types
+-localization for DB non-user entities
+
+Decisions I made:
+-Prefer snake_case for DB, camelCase for everything else.
+-Used as const for numeric constants and enums for fixed strings.
+-Applied classes where design patterns required hierarchy; otherwise, used functions.
+-Standardized on bcrypt for password hashing (64 characters, 10 salt rounds).
+-Language validation middleware precedes customReqValidation().
+-Hard deletes over deletedAt where appropriate.
+-Followed good schema architecture, avoided stuffing data into omnitables tables.
+
+-Challenges (used GPT help):
+-Regex.
+-Sequelize failing to create references for foreign keys in some cases.
+
+Final thoughts:
+-Sequelize is handy but lacks built-in attack protection (addressed via assignment logic).
+-JWTs are simple, stateless, and great for horizontal scaling (no need for managed cache DBs in simple apps).
+-Used online tools mostly for JWT, Sequelize, and regex.
+
+Thanks for letting me work on this!
 dev.roman

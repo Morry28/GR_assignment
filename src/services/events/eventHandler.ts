@@ -3,6 +3,7 @@ import * as path from 'path'
 import { LOG_STATUS } from '../../utils/enums'
 import { TStatus } from '../../types/types'
 
+//SuperClass responsible for writing into file or creating it
 export default abstract class EventHandler {
     private static filePath: string = path.resolve('./logs')
     private static fileName: string = 'serverLogs.txt'

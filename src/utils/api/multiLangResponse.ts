@@ -1,6 +1,6 @@
 import { TMultiLangResponseObject } from '../../types/types'
 
-//translator podla language code
+//translator
 export const resposeTranslation: TMultiLangResponseObject = {
     en: {
         MISSING_TOKEN: 'Authorization failed: Token is missing',
@@ -25,6 +25,7 @@ export const resposeTranslation: TMultiLangResponseObject = {
         EXERCISE_PROGRAM_REMOVED: 'Program was removed from exercise successfully',
         USER_NOT_FOUND:'User not found',
         USER_UPDATED: 'User updated sucessfully',
+        COMPLETED_EXERCISE_DELETED: 'Completed exercise removed'
 
     },
     sk: {
@@ -49,7 +50,8 @@ export const resposeTranslation: TMultiLangResponseObject = {
         EXERCISE_PROGRAM_UPDATED: 'Úspešne ste zmenili program cviku',
         EXERCISE_PROGRAM_REMOVED: 'Program bol uspešne odstranený z cviku',
         USER_NOT_FOUND: 'Používateľ sa nenašiel',
-        USER_UPDATED: 'Používateľ bol pozmenený'
+        USER_UPDATED: 'Používateľ bol pozmenený',
+        COMPLETED_EXERCISE_DELETED: 'Hotové cvičenie vymazané'
 
 
 

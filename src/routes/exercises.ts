@@ -16,6 +16,7 @@ const {
 } = models
 
 export default () => {
+	//For all traffic, all exercises. Queries are protected
 	router.get('/?', async (req: Request, res: Response, _next: NextFunction) => {
 
 		const { language } = basicReqInfo(req)
@@ -52,7 +53,7 @@ export default () => {
 					{
 						model: Program_translation,
 						as: 'translations',
-						attributes: ['name'], //na FE sa da k tomu dostat data.rows[x].program.translations[0]?.name ?? data.rows[x].program.name
+						attributes: ['name'], //On the frontend, this can be accessed via: data.rows[x].program.translations[0]?.name ?? data.rows[x].program.name
 						where: {
 							lang_code: language
 						},
@@ -66,7 +67,7 @@ export default () => {
 			include.push({
 				model: Exercise_translation,
 				as: 'translations',
-				attributes: ['name'], //na FE sa da k tomu dostat data.rows[x].translations[0]?.name ?? data.rows[x].name
+				attributes: ['name'], //On the frontend, this can be accessed via: data.rows[x].translations[0]?.name ?? data.rows[x].name
 				where: {
 					lang_code: language,
 					...(querySearch && {
@@ -75,7 +76,7 @@ export default () => {
 						}
 					})
 				},
-				required: true
+				required: false
 			})
 		}
 
@@ -99,7 +100,7 @@ export default () => {
 
 
 		} catch (e) {
-			error('CRITICAL', '/exercise, ' + e)
+			error('NORMAL', `/exercise, ${e}`)
 
 			return res.status(500).json({
 				message: resposeTranslation[language].SOMETHING_WENT_WRONG
@@ -108,6 +109,8 @@ export default () => {
 
 
 	})
+
+	//For all traffic, all exercises
 	router.get('/', async (req: Request, res: Response, _next: NextFunction) => {
 
 		const { language } = basicReqInfo(req)
@@ -146,7 +149,7 @@ export default () => {
 				message: resposeTranslation[language].LIST_OF_EXERCISES
 			})
 		} catch (e) {
-			error('CRITICAL', '/exercise , ' + e)
+			error('NORMAL', `/exercise , ${e}`)
 
 			return res.status(500).json({
 				message: resposeTranslation[language].SOMETHING_WENT_WRONG

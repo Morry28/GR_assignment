@@ -8,6 +8,7 @@ import { ROLES } from '../utils/enums'
 import { FIELD_LENGTHS } from '../utils/consts'
 import { User_account_ExerciseModel } from './user_account_exercise'
 
+//? only for info
 export class User_accountModel extends DatabaseModel {
     id: number
     name?: string

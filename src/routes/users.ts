@@ -16,13 +16,14 @@ const {
     User_account,
     User_account_Exercise,
     Completed_Exercise,
-    Exercise
+    Exercise,
+    Exercise_translation
 
 } = models
 
 export default () => {
 
-    //Necitlive data iba pre reg users, vsetci useri
+    //non-important data
     router.get('/', isAuthorized, async (req: Request, res: Response, _next: NextFunction) => {
 
         const { language } = basicReqInfo(req)
@@ -37,7 +38,7 @@ export default () => {
                 message: resposeTranslation[language].LIST_OF_USERS
             })
         } catch (e) {
-            error('NORMAL', 'Error at /users/ api endpoint while retrieving data from database: ' + e)
+            error('NORMAL', ` at /users/ api endpoint while retrieving data from database: ${e}`)
             return res.status(500).json({
                 message: resposeTranslation[language].SOMETHING_WENT_WRONG
             })
@@ -46,7 +47,7 @@ export default () => {
 
     })
 
-    //Userove data
+    //User data
     router.get('/me', isAuthorized, async (req: Request, res: Response, _next: NextFunction) => {
 
         const { language, decoded } = basicReqInfo(req)
@@ -66,7 +67,7 @@ export default () => {
                 message: resposeTranslation[language].SUCCESS
             })
         } catch (e) {
-            error('NORMAL', 'Error at /users/e api endpoint while retrieving data from database: ' + e)
+            error('NORMAL', `Error at /users/e api endpoint while retrieving data from database: ${e}`)
             return res.status(500).json({
                 message: resposeTranslation[language].SOMETHING_WENT_WRONG
             })
@@ -74,7 +75,7 @@ export default () => {
 
 
     })
-    //Aktivne exercises
+    //active exercises
     router.get('/exercises/active', isAuthorized, async (req: Request, res: Response, _next: NextFunction) => {
         const { language, decoded } = basicReqInfo(req)
         const userId = decoded.id
@@ -82,10 +83,26 @@ export default () => {
         try {
             const activeExercises = await User_account_Exercise.findAll({
                 where: {
-                    id: userId,
-                    endedAt: null
+                    id: 1,
                 },
-                include: [{ all: true }]
+                include: [
+                    { all: true },
+                    {
+                        model: Exercise,
+                        as: 'exercise',
+                        include: [
+                            {
+                                model: Exercise_translation,
+                                as: 'translations',
+                                attributes: ['name'], 
+                                where: {
+                                    lang_code: 'sk' 
+                                },
+                                required: false 
+                            }
+                        ]
+                    }
+                ]
             })
 
             log('INFO', `Active exercises fetched for user ${userId}`)
@@ -94,7 +111,7 @@ export default () => {
                 message: resposeTranslation[language].ACTIVE_EXERCISES_FETCHED
             })
         } catch (e) {
-            error('CRITICAL', `/exercises/active fetch failed for user ${userId}, ${e}`)
+            error('NORMAL', `/exercises/active fetch failed for user ${userId}, ${e}`)
             return res.status(500).json({
                 message: resposeTranslation[language].SOMETHING_WENT_WRONG
             })
@@ -110,10 +127,7 @@ export default () => {
             const completedExercises = await Completed_Exercise.findAll({
                 where: {
                     id: userId
-                },
-                include: [
-                    //{ model: Exercise, as: 'exercise' } 
-                ]
+                }
             })
 
             log('INFO', `Completed exercises fetched for user ${userId}`)
@@ -122,14 +136,14 @@ export default () => {
                 message: resposeTranslation[language].COMPLETED_EXERCISES_FETCHED
             })
         } catch (e) {
-            error('CRITICAL', `/exercises/completed fetch failed for user ${userId}, ${e}`)
+            error('NORMAL', `/exercises/completed fetch failed for user ${userId}, ${e}`)
             return res.status(500).json({
                 message: resposeTranslation[language].SOMETHING_WENT_WRONG
             })
         }
     })
 
-    //vymazanie z completed
+    //delete from completed
     router.delete('/exercises/completed/:id', isAuthorized, async (req: Request, res: Response, _next: NextFunction) => {
         const { language, userToken, decoded } = basicReqInfo(req)
         const iserId = decoded.id
@@ -164,69 +178,11 @@ export default () => {
                 message: resposeTranslation[language].COMPLETED_EXERCISE_DELETED
             })
         } catch (e) {
-            error('CRITICAL', `/exercises/completed delete failed for ID: ${id}, ${e}`)
+            error('NORMAL', `/exercises/completed delete failed for ID: ${id}, ${e}`)
             return res.status(500).json({
                 message: resposeTranslation[language].SOMETHING_WENT_WRONG
             })
         }
     })
-
-    router.post('/start', async (req: Request, res: Response, _next: NextFunction) => {
-        const { language, userToken, decoded } = basicReqInfo(req)
-        const userId = decoded.id
-        const { id } = req.body
-        try {
-            const exercise = await Exercise.findByPk(id)
-
-
-            const result = await User_account_Exercise.create({
-                exercise_id: id,
-                user_account_id: 1
-
-            })
-
-        } catch (e) {
-            console.log(e)
-
-        }
-    })
-
-    router.post('/end', async (req: Request, res: Response, _next: NextFunction) => {
-        const { language, userToken, decoded } = basicReqInfo(req)
-        const userId = decoded.id
-        const { id } = req.body
-        console.log('id', id)
-
-        try {
-
-            const userExercise = await User_account_Exercise.findByPk(id) //aktivna
-            console.log(userExercise)
-            const startedAt = new Date(userExercise.createdAt)
-            const now = new Date()
-            const diffSeconds = Math.ceil((now.getTime() - startedAt.getTime()) / 1000)
-
-            const completed = await Completed_Exercise.create({ // ukoncena
-                time_start: startedAt,
-                time_end: now,
-                duration: diffSeconds,
-                user_account_id: 1,
-                exercise_id: userExercise.id
-
-
-            })
-
-            const result = await User_account_Exercise.destroy({ //zavriet aktivnu
-                where: {
-                    id: userExercise.id
-                }
-
-            })
-
-
-        } catch (e) {
-            console.log(e)
-        }
-    })
-
     return router
 }
