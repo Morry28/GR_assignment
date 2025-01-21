@@ -74,7 +74,9 @@ day: 5
 -2h~ Query paginacia a limity ( podla jazyku )
 -2h~ Pridanie validacie query, nechcel som z toho mat if hell a chcel som aby to bolo viac menej dynamicke.
 *       v utils/consts mame objekt kde mame povolene query a ich typy, customReqValidation() nasledne kontroluje queries podla toho objektu
+-4h~ finalizacia APis, oprava logiky modelov 
 
+sum 8h~
 
 Zopar notes:
 - Nevedel som ci mam implementovat tak som to vynechal ( nebolo v zadani ):

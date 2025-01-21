@@ -1,8 +1,8 @@
 import { idText } from "typescript"
-import { log } from "../../services/events"
-import { resposeTranslation } from './multiLangResponse'
+import { log } from "../services/events"
+import { resposeTranslation } from '../utils/api/multiLangResponse'
 import { Request, Response, NextFunction } from "express"
-import { knownQueries } from '../../utils/consts'
+import { knownQueries } from '../utils/consts'
 //2. custom middleware na validaciu emailu ak je pritomny
 export const customReqValidation = () => {
     return (req: Request, res: Response, next: NextFunction) => {

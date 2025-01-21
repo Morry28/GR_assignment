@@ -6,7 +6,7 @@ import {
 import { DatabaseModel } from '../types/db'
 import { ROLES } from '../utils/enums'
 import { FIELD_LENGTHS } from '../utils/consts'
-import { User_account_ExcerciseModel } from './user_account_excercise'
+import { User_account_ExerciseModel } from './user_account_exercise'
 
 export class User_accountModel extends DatabaseModel {
     id: number
@@ -17,7 +17,7 @@ export class User_accountModel extends DatabaseModel {
     email: string
     password: string
     role: ROLES
-    exercises:User_account_ExcerciseModel[]
+    exercises:User_account_ExerciseModel[]
 }
 
 export default (sequelize: Sequelize) => {
@@ -68,13 +68,14 @@ export default (sequelize: Sequelize) => {
 
     User_accountModel.associate = (models) => {
         (User_accountModel as any).belongsToMany(models.Exercise,{
-            through: models.User_account_Excercise,
+            through: models.User_account_Exercise,
             foreignKey:{
-                name:'user_accountID',
+                name:'user_account_id',
                 allowNull:false
             },
-            otherKey: 'excerciseID'
+            otherKey: 'exercise_id'
         })
+        
 
     }
 

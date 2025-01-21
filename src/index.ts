@@ -5,18 +5,18 @@ import ProgramRouter from './routes/programs'
 import ExerciseRouter from './routes/exercises'
 import UserRouter from './routes/users'
 import AdminRouter from './routes/admin'
-import {customReqValidation} from './utils/api/customReqValidation'
+import {customReqValidation} from './middlewares/customReqValidation'
 import os from 'os'
 import { log } from './services/events'
 import LogHandler from './services/events/logHandler'
-import { languageLayer } from './utils/api/languageLayer'
+import { languageLayer } from './middlewares/languageLayer'
 import passport from 'passport'
 import AuthRouter from './routes/auths'
 
 //inicializujeme log file
 LogHandler.initialize()
 
-//Auto-optimalizacia pre matematicke asynchronne ulohy ( napr bcrypt ), automaticky rozsirime threadpool na max jadier
+//Auto-optimalizacia pre matematicke asynchronne ulohy ( napr bcrypt ), automaticky rozsirime threadpool na max threadov
 //v pripade ze cpu podporuje hyperthreading mame az dvojnasobok threadov
 process.env.UV_THREADPOOL_SIZE = os.cpus().length.toString()
 log('INFO','Prepinam z 4 threadov na ' + process.env.UV_THREADPOOL_SIZE)

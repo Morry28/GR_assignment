@@ -40,7 +40,7 @@ export default (sequelize: Sequelize) => {
 
         (Program_translationModel as any).belongsTo(models.Program, {
             foreignKey: {
-                name: 'programID',
+                name: 'program_id',
                 allowNull: false
             },
             as: 'translations'

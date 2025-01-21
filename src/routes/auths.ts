@@ -42,11 +42,7 @@ export default () => {
             })
         }
         try {
-            //vytvorime autorizacny token
-            const freshJwt = generateJwt({
-                role,
-                email
-            })
+
 
             //insertneme usera do db
             await User_account.create({
@@ -54,6 +50,20 @@ export default () => {
                 password: hashedPass,
                 role,
                 nick_name: generateGuestId()
+            })
+
+            //vytiahneme id aby sme ho vlozili do tokenu, pre buduce porovnavanie podla id ( rychlejsie ako mail )
+            const result = await User_account.findOne({
+                where: {
+                    email: email
+                }
+            })
+
+            //vytvorime autorizacny token
+            const freshJwt = generateJwt({
+                id: result.id,
+                role,
+                email
             })
 
             log('SUCCESS', 'A new user has been registered: ' + email + ' as ' + role)
@@ -110,6 +120,7 @@ export default () => {
             if (!isPassValid) return res.status(401).json({ message: resposeTranslation[language].UNAUTHORIZED })
 
             const freshJwt = generateJwt({
+                id:userInfo.id,
                 role,
                 email: userInfo.email
             })

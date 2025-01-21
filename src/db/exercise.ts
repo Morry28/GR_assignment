@@ -7,7 +7,7 @@ import {
 } from 'sequelize'
 import { DatabaseModel } from '../types/db'
 import { ProgramModel } from './program'
-import { Exercise_translationModel } from './excercise_translation'
+import { Exercise_translationModel } from './exercise_translation'
 import { EXERCISE_DIFFICULTY } from '../utils/enums'
 import { FIELD_LENGTHS } from '../utils/consts'
 
@@ -43,25 +43,24 @@ export default (sequelize: Sequelize) => {
 	})
 
 	ExerciseModel.associate = (models) => {
-		console.log('I AM HERE');
 
 		(ExerciseModel as any).belongsTo(models.Program, {
 			foreignKey: {
-				name: 'programID', 
+				name: 'program_id', 
 			}
 		});
 
 		(ExerciseModel as any).belongsToMany(models.User_account, {
-			through: models.User_account_Excercise,
+			through: models.User_account_Exercise,
 			foreignKey: {
-				name: 'exerciseID',
+				name: 'exercise_id',
 				allowNull: false
 			},
-			otherKey:'user_accounteID'
+			otherKey:'user_account_id'
 		});
 
 		(ExerciseModel as any).hasMany(models.Exercise_translation, {
-			foreignKey: 'exerciseID',
+			foreignKey: 'exercise_id',
 			as: 'translations',
 		})
 	}
